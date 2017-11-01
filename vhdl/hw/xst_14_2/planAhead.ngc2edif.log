@@ -1,0 +1,39 @@
+Release 12.3 - ngc2edif M.70d (lin)
+Copyright (c) 1995-2010 Xilinx, Inc.  All rights reserved.
+Reading design LZRWcompressor.ngc ...
+WARNING:NetListWriters:298 - No output is written to LZRWcompressor.xncf,
+   ignored.
+Processing design ...
+   Preping design's networks ...
+   Preping design's macros ...
+WARNING:NetListWriters:306 - Signal bus Candidate2xD<127 : 0> on block
+   LZRWcompressor is not reconstructed, because there are some missing bus
+   signals.
+WARNING:NetListWriters:306 - Signal bus comparatorInst/cnt<3 : 0> on block
+   LZRWcompressor is not reconstructed, because there are some missing bus
+   signals.
+  finished :Prep
+Writing EDIF netlist file LZRWcompressor.edif ...
+ngc2edif: Total memory usage is 24204 kilobytes
+
+Release 14.4 - ngc2edif P.49d (lin64)
+Copyright (c) 1995-2012 Xilinx, Inc.  All rights reserved.
+Reading design CompressorTop.ngc ...
+WARNING:NetListWriters:298 - No output is written to CompressorTop.xncf,
+   ignored.
+Processing design ...
+   Preping design's networks ...
+   Preping design's macros ...
+WARNING:NetListWriters:306 - Signal bus InputFIFOInst/Madd_n0079_Madd_cy<9 : 6>
+   on block CompressorTop is not reconstructed, because there are some missing
+   bus signals.
+WARNING:NetListWriters:306 - Signal bus LZRWcompressorInst/CandLen2xDP<4 : 1> on
+   block CompressorTop is not reconstructed, because there are some missing bus
+   signals.
+WARNING:NetListWriters:306 - Signal bus LZRWcompressorInst/comparatorInst/cnt<3
+   : 0> on block CompressorTop is not reconstructed, because there are some
+   missing bus signals.
+  finished :Prep
+Writing EDIF netlist file CompressorTop.edif ...
+ngc2edif: Total memory usage is 110344 kilobytes
+
