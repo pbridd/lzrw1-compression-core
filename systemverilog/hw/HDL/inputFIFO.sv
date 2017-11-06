@@ -29,8 +29,8 @@
 //**************************************************************************************************************
 //
 // Change Log:
-//
 // Version 1.0 - 2012/6/30 - LS
+//
 //   started file
 //
 // Version 1.0 - 2013/04/05 - LS
@@ -63,7 +63,7 @@ module InputFIFO(
 
 	logic[DEPTH : 0]   signed  LengthxDN, LengthxDP;
 	logic[DEPTH-1 : 0] signed  WrPtrxDN, WrPtrxDP;
-	logic[DEPTH-1 : 0] signed  RdPtrxDN, RdPtrxDN;
+	logic[DEPTH-1 : 0] signed  RdPtrxDN, RdPtrxDP;
 	logic DoWritexS, DoReadxS;
 	logic OutStrobexSN, OutStrobexSP;
 	logic BusyxSN, BusyxSP;
@@ -91,6 +91,50 @@ module InputFIFO(
 		// use busy as an almost full indicator
 		if(LengthxDP >= (DEPTH-8))
 			BusyxSN = 1'b1;
+	end
+
+	// implement data output port logic
+	// TODO pbridd: fix the error / assertion logic
+	always_comb begin : lenCntAlways
+		LengthxDN = LenthxDP;
+		if(DoWritexS && (DoReadxS == 1'b0))
+			LengthxDN <= LengthxDP + 4;
+		else
+			$error("-E- Input FIFO overrun");
+		if(DoWritexS == 1'b0 && DoReadxS == 1'b1) begin
+			assert(LengthxDP > 0);	
+			else
+				$error("-E- Input FIFO underrun");
+			LengthxDN = LengthxDP - 1;
+		end
+		if(DoWritexS = 1'b1 && DoReadxS == 1'b1) begin
+			assert(LengthxDP < DEPTH-3);
+			else
+				$error("-E- Input FIFO underrun at simultaneous read and write");
+			LengthxDN = LengthxDP + 4 - 1;
+		end
+	end
+
+	assign DOutxDO = BRamDOutxD[7:0];
+	assign LengthxDO = LengthxDP;
+	assign OutStrobexSO = OutStrobexSP;
+	assign BusyxSO = BusyxSP;
+
+	always_ff(posedge ClkxCI | posedge RstxRI) begin
+		if(RstxRI = 1'b1) begin
+			LengthxDP <= '0;
+			WrPtrxDP <= '0;
+			RdPtrxDP <= '0;
+			OutStrobexSP <= '0;
+			LengthxDP <= '0;
+		end
+		else
+			LengthxDP <= LengthxDN;
+			WrPtrxDP <= WrPtrxDN;
+			RdPtrxDP <= RdPtrxDN;
+			OutStrobexSP <= OutStrobexSN;
+			BusyxSP <= BusyxSN;
+		end
 	end
 
 endmodule
