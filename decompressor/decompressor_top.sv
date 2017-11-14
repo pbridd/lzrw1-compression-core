@@ -139,6 +139,16 @@ module decompressor_top(
 		endcase
 	end
 
+	history_buffer myhist(
+			.clock(clock),
+			.reset(reset), 
+			.rd_addr(history_out_addr),
+			.wr_addr(history_in_addr),
+			.wr_en(history_buffer_wr_en),
+			.data_in(data_in_fp),
+			.data_out(history_buffer_result)
+		);
+
 
 
 
