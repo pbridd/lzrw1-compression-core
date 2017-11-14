@@ -107,11 +107,11 @@ module decompressor_top(
 
 					// 3. determine the next state
 					if(control_word_in == 1'b0) 
-						decom_state_next = PASS_THROUGH;
+						decomp_state_next = PASS_THROUGH;
 					else begin
 						decomp_state_next = DECOMPRESS;
 						history_out_addr_next = history_in_addr - data_in.compressed_objects.offset;
-						history_max_addr = history_in_addr - data_in.compressed_objects.offset + length - 1;
+						history_max_addr = history_in_addr - data_in.compressed_objects.offset + data_in.compressed_objects.length - 1;
 					end
 				end
 			end
@@ -132,7 +132,7 @@ module decompressor_top(
 					history_out_addr_next = history_out_addr + 1;
 				end
 				else
-					decom_state_next = IDLE;
+					decomp_state_next = IDLE;
 
 			end
 		endcase
