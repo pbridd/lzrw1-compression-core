@@ -31,14 +31,14 @@ module decompressor_top(
 
 	} data_in_t;
 	
-	input clock, reset;
-	input data_in_t data_in;
-	input control_word_in;
-	input in_data_valid;
-	output history_full;
-	output[7:0] decompressed_byte;
-	output out_valid;
-	output decompressor_busy;
+	input  logic clock, reset;
+	input  data_in_t data_in;
+	input  logic control_word_in;
+	input  logic in_data_valid;
+	output logic history_full;
+	output logic[7:0] decompressed_byte;
+	output logic out_valid;
+	output logic decompressor_busy;
 
 	
 
@@ -89,6 +89,7 @@ module decompressor_top(
 		data_in_fp_next = data_in_fp;
 		control_word_in_fp_next = control_word_in_fp;
 		history_in_addr_next = history_in_addr;
+		history_max_addr_next = history_max_addr;
 		decompressed_byte = '0;
 		out_valid = 1'b0;
 
@@ -111,7 +112,7 @@ module decompressor_top(
 					else begin
 						decomp_state_next = DECOMPRESS;
 						history_out_addr_next = history_in_addr - data_in.compressed_objects.offset;
-						history_max_addr = history_in_addr - data_in.compressed_objects.offset + data_in.compressed_objects.length - 1;
+						history_max_addr_next = history_in_addr - data_in.compressed_objects.offset + data_in.compressed_objects.length - 1;
 					end
 				end
 			end
