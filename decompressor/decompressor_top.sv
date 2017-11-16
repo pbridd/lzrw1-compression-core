@@ -51,8 +51,9 @@ module decompressor_top(
 	decomp_state_type decomp_state, decomp_state_next;
 	logic[HISTORY_ADDR_WIDTH-1:0] history_out_addr, history_out_addr_next, history_in_addr, history_in_addr_next;
 	logic[HISTORY_ADDR_WIDTH-1:0] history_max_addr, history_max_addr_next;
+	logic[7:0] history_buffer_in;
 	logic history_buffer_wr_en;
-	logic[15:0] history_buffer_result;
+	logic[7:0] history_buffer_result;
 	data_in_t data_in_fp, data_in_fp_next;
 	logic control_word_in_fp, control_word_in_fp_next;
 
@@ -89,6 +90,7 @@ module decompressor_top(
 		data_in_fp_next = data_in_fp;
 		control_word_in_fp_next = control_word_in_fp;
 		history_in_addr_next = history_in_addr;
+		history_buffer_in = data_in_fp;
 		history_max_addr_next = history_max_addr;
 		decompressed_byte = '0;
 		out_valid = 1'b0;
@@ -126,10 +128,15 @@ module decompressor_top(
 			end
 			DECOMPRESS: begin
 				//assign outputs
-				decompressed_byte = history_buffer_result[7:0];
+				decompressed_byte = history_buffer_result;
 				out_valid = 1'b1;
 
-				if(history_out_addr <= history_max_addr) begin
+				// wtite this to the history buffer
+				history_buffer_wr_en = 1'b1;
+				history_buffer_in = history_buffer_result;
+				
+				if(history_out_addr < history_max_addr) begin
+
 					history_out_addr_next = history_out_addr + 1;
 				end
 				else
@@ -145,7 +152,7 @@ module decompressor_top(
 			.rd_addr(history_out_addr),
 			.wr_addr(history_in_addr),
 			.wr_en(history_buffer_wr_en),
-			.data_in(data_in_fp),
+			.data_in(history_buffer_in),
 			.data_out(history_buffer_result)
 		);
 
