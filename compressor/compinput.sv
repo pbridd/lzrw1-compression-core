@@ -4,7 +4,8 @@ input [15:0] [7:0] CurByte,
 input [11:0] offset , 
 output logic [15:0] [7:0] toCompare,
 output logic [15:0] [7:0] NextBytes,
-output logic [23:0] toHash);
+output logic [23:0] toHash,
+output integer bytePtr);
 
 parameter HISTORY = 4096;
 
@@ -55,4 +56,6 @@ always_ff @(posedge clock) begin
 		else toCompare <= '0;
 	end
 end
+
+assign bytePtr = bytePointer;
 endmodule
