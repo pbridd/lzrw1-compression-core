@@ -9,7 +9,7 @@ module history_buffer(
 	);
 
 	parameter HISTORY_SIZE = 4096;
-	parameter ENTRY_WIDTH = 16;
+	parameter ENTRY_WIDTH = 8;
 	localparam HISTORY_ADDR_WIDTH = $clog2(HISTORY_SIZE);
 
 

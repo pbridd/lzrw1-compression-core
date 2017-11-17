@@ -51,8 +51,9 @@ module decompressor_top(
 	decomp_state_type decomp_state, decomp_state_next;
 	logic[HISTORY_ADDR_WIDTH-1:0] history_out_addr, history_out_addr_next, history_in_addr, history_in_addr_next;
 	logic[HISTORY_ADDR_WIDTH-1:0] history_max_addr, history_max_addr_next;
+	logic[7:0] history_buffer_in;
 	logic history_buffer_wr_en;
-	logic[15:0] history_buffer_result;
+	logic[7:0] history_buffer_result;
 	data_in_t data_in_fp, data_in_fp_next;
 	logic control_word_in_fp, control_word_in_fp_next;
 
@@ -89,6 +90,7 @@ module decompressor_top(
 		data_in_fp_next = data_in_fp;
 		control_word_in_fp_next = control_word_in_fp;
 		history_in_addr_next = history_in_addr;
+		history_buffer_in = data_in_fp;
 		history_max_addr_next = history_max_addr;
 		decompressed_byte = '0;
 		out_valid = 1'b0;
@@ -104,15 +106,30 @@ module decompressor_top(
 
 					// 2. write data to the history buffer and increment history pointer
 					history_buffer_wr_en = 1'b1;
-					history_in_addr_next = history_in_addr + 1;
+					if (history_in_addr < HISTORY_SIZE-1)
+						history_in_addr_next = history_in_addr + 1;
+					else
+						history_in_addr_next = '0;
 
 					// 3. determine the next state
 					if(control_word_in == 1'b0) 
 						decomp_state_next = PASS_THROUGH;
 					else begin
 						decomp_state_next = DECOMPRESS;
-						history_out_addr_next = history_in_addr - data_in.compressed_objects.offset;
-						history_max_addr_next = history_in_addr - data_in.compressed_objects.offset + data_in.compressed_objects.length - 1;
+						// check to see if we will roll over
+						if(history_in_addr  > data_in.compressed_object.offset) begin
+							history_out_addr_next = history_in_addr - data_in.compressed_objects.offset;
+							history_max_addr_next = history_in_addr - data_in.compressed_objects.offset + data_in.compressed_objects.length - 1;
+						end
+						// if we will roll over, perform special calculations
+						else begin
+							history_out_addr_next = HISTORY_SIZE-1-(data_in.compressed_objects.offset - history_in_addr-1);
+							if(HISTORY_SIZE-1-history_out_addr_next <= (data_in.compressed_objects.length-1)) 
+								history_max_addr_next = history_out_addr_next + data_in.compressed_objects.length-1;
+							else
+								history_max_addr_next = data_in.compressed_object.length - (HISTORY_SIZE-1-history_out_addr_next + 1) - 1;
+						end
+
 					end
 				end
 			end
@@ -126,11 +143,18 @@ module decompressor_top(
 			end
 			DECOMPRESS: begin
 				//assign outputs
-				decompressed_byte = history_buffer_result[7:0];
+				decompressed_byte = history_buffer_result;
 				out_valid = 1'b1;
 
-				if(history_out_addr <= history_max_addr) begin
-					history_out_addr_next = history_out_addr + 1;
+				// wtite this to the history buffer
+				history_buffer_wr_en = 1'b1;
+				history_buffer_in = history_buffer_result;
+				
+				if(history_out_addr != history_max_addr) begin
+					if (history_in_addr < HISTORY_SIZE-1)
+						history_in_addr_next = history_in_addr + 1;
+					else
+						history_in_addr_next = '0;
 				end
 				else
 					decomp_state_next = IDLE;
@@ -145,7 +169,7 @@ module decompressor_top(
 			.rd_addr(history_out_addr),
 			.wr_addr(history_in_addr),
 			.wr_en(history_buffer_wr_en),
-			.data_in(data_in_fp),
+			.data_in(history_buffer_in),
 			.data_out(history_buffer_result)
 		);
 
