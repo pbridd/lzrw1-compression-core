@@ -10,9 +10,9 @@ module decompressor_top(
 		reset,				// reset input
 		data_in,			// The 2 byte data-in field
 		control_word_in,	// The control word that corresponds to data-in
-		in_data_valid,		// when this is 1'b1, the decompressor will use the inputs
+		data_in_valid,		// when this is 1'b1, the decompressor will use the inputs
 //		history_full,		// FYI: the history buffer is full. Output might not be valid.
-		decompressed_byte, // the decompressed output
+		decompressed_byte,  // the decompressed output
 		out_valid,			// whether the output is valid. Don't use data if 0.
 		decompressor_busy	// whether the decompressor is busy. When this is 1'b1, the decompressor will ignore all data inputs.
 	);
@@ -34,7 +34,7 @@ module decompressor_top(
 	input  logic clock, reset;
 	input  data_in_t data_in;
 	input  logic control_word_in;
-	input  logic in_data_valid;
+	input  logic data_in_valid;
 //	output logic history_full;
 	output logic[7:0] decompressed_byte;
 	output logic out_valid;
@@ -99,7 +99,7 @@ module decompressor_top(
 		case(decomp_state)
 			IDLE: begin
 				decompressor_busy = 1'b0;
-				if(in_data_valid) begin
+				if(data_in_valid) begin
 					// 1. Flop the data
 					data_in_fp_next = data_in;
 					control_word_in_fp_next = control_word_in;
