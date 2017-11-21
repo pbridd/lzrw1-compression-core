@@ -90,7 +90,7 @@ module decompressor_top(
 		data_in_fp_next = data_in_fp;
 		control_word_in_fp_next = control_word_in_fp;
 		history_in_addr_next = history_in_addr;
-		history_buffer_in = data_in_fp;
+		history_buffer_in = data_in;
 		history_max_addr_next = history_max_addr;
 		decompressed_byte = '0;
 		out_valid = 1'b0;

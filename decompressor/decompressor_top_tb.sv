@@ -37,7 +37,7 @@ module decompressor_top_tb;
 		
 
 		//process the decompressed file
-		decompressed_file = $fopen(compressed_filename, "r");
+		decompressed_file = $fopen(decompressed_filename, "r");
 		if(!decompressed_file) begin
 			$display("Could not open %s", decompressed_filename);
 			$finish;
@@ -46,7 +46,7 @@ module decompressor_top_tb;
 			temp_int = $fread(compressed_array, decompressed_file);
 
 		// process the control word file
-		control_word_file = $fopen(compressed_filename, "r");
+		control_word_file = $fopen(control_word_filename, "r");
 		if(!control_word_file) begin
 			$display("Could not open %s", control_word_file);
 			$finish;
