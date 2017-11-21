@@ -98,9 +98,10 @@ module decompressor_top_tb;
 
 		// feed in stimulus
 		for(int i = 0; i < MAX_FILE_SIZE; i++) begin
+
 			// make sure we're passing valid data in
-			if(dut_data_in === 0) begin
-				$display("Data in array terminated at iteration %d", i);
+			if(tv_compressed_array[i] === 0 || ^tv_compressed_array[i] === 1'bX) begin
+				$display("Data input terminated at iteration %d", i);
 				break;
 			end
 			
