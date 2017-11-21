@@ -88,8 +88,8 @@ module decompressor_top_tb;
 		// feed in stimulus
 		for(int i = 0; i < MAX_FILE_SIZE; i++) begin
 			// make sure we're passing valid data in
-			if(data_in = 1'b0) begin
-				$display("Data in array terminated at iteration %i", i);
+			if(dut_data_in === 1'b0) begin
+				$display("Data in array terminated at iteration %d", i);
 				break;
 			end
 			

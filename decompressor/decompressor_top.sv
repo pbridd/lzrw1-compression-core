@@ -117,7 +117,7 @@ module decompressor_top(
 					else begin
 						decomp_state_next = DECOMPRESS;
 						// check to see if we will roll over
-						if(history_in_addr  > data_in.compressed_object.offset) begin
+						if(history_in_addr  > data_in.compressed_objects.offset) begin
 							history_out_addr_next = history_in_addr - data_in.compressed_objects.offset;
 							history_max_addr_next = history_in_addr - data_in.compressed_objects.offset + data_in.compressed_objects.length - 1;
 						end
@@ -127,7 +127,7 @@ module decompressor_top(
 							if(HISTORY_SIZE-1-history_out_addr_next <= (data_in.compressed_objects.length-1)) 
 								history_max_addr_next = history_out_addr_next + data_in.compressed_objects.length-1;
 							else
-								history_max_addr_next = data_in.compressed_object.length - (HISTORY_SIZE-1-history_out_addr_next + 1) - 1;
+								history_max_addr_next = data_in.compressed_objects.length - (HISTORY_SIZE-1-history_out_addr_next + 1) - 1;
 						end
 
 					end
