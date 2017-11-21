@@ -156,6 +156,10 @@ module decompressor_top(
 						history_in_addr_next = history_in_addr + 1;
 					else
 						history_in_addr_next = '0;
+					if (history_out_addr < HISTORY_SIZE-1)
+						history_out_addr_next = history_out_addr + 1;
+					else
+						history_out_addr_next = '0;
 				end
 				else
 					decomp_state_next = IDLE;
