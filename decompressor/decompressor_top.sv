@@ -94,6 +94,7 @@ module decompressor_top(
 		history_max_addr_next = history_max_addr;
 		decompressed_byte = '0;
 		out_valid = 1'b0;
+		history_buffer_wr_en = 1'b0;
 
 		decompressor_busy = 1'b1;
 		case(decomp_state)
