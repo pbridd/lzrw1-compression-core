@@ -8,7 +8,7 @@ module decompressor_top_tb;
 
 	logic[15:0] tv_compressed_array[MAX_FILE_SIZE-1:0];
 	byte tv_decompressed_array[MAX_FILE_SIZE:0];
-	logic tv_control_word_array[MAX_FILE_SIZE-1:0];
+	logic[MAX_FILE_SIZE-1:0] tv_control_word_array[0:0];
 
 	logic[7:0] test_output_byte_array[MAX_FILE_SIZE-1:0];
 
@@ -22,7 +22,7 @@ module decompressor_top_tb;
 	// TASKS
 	task getTestVectors(input string compressed_filename, decompressed_filename, control_word_filename,
 		output logic[15:0] compressed_array[MAX_FILE_SIZE-1:0], output byte decompressed_array[MAX_FILE_SIZE:0],
-		output logic control_word_array[MAX_FILE_SIZE-1:0]);
+		output logic[MAX_FILE_SIZE-1:0] control_word_array[0:0]);
 		int compressed_file, decompressed_file, control_word_file;
 		int temp_int;
 
@@ -43,7 +43,7 @@ module decompressor_top_tb;
 			$finish;
 		end
 		else
-			temp_int = $fread(compressed_array, decompressed_file);
+			temp_int = $fread(decompressed_array, decompressed_file);
 
 		// process the control word file
 		control_word_file = $fopen(control_word_filename, "r");
@@ -52,7 +52,7 @@ module decompressor_top_tb;
 			$finish;
 		end
 		else
-			temp_int = $fread(control_word_array, control_word_file);
+			temp_int = $fread(control_word_array[0], control_word_file);
 	endtask
 
 	task reset_decompressor;
@@ -75,7 +75,7 @@ module decompressor_top_tb;
 
 		for(int k = 0; k < MAX_FILE_SIZE; k++) begin
 			tv_compressed_array[k] = '0;
-			tv_control_word_array[k] = '0;
+			tv_control_word_array[0][k] = '0;
 			tv_decompressed_array[k] = '0;
 		end
 
@@ -106,7 +106,7 @@ module decompressor_top_tb;
 			end
 			
 			dut_data_in = tv_compressed_array[i];
-			dut_control_word_in = tv_control_word_array[i];
+			dut_control_word_in = tv_control_word_array[0][i];
 			dut_data_in_valid = 1'b1;
 
 			// wait for busy to go low
