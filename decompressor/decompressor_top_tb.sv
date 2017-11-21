@@ -104,7 +104,7 @@ module decompressor_top_tb;
 
 	// capture data out
 	initial begin
-		int errors = 0;
+		automatic int errors = 0;
 
 		wait_for_decompressor_reset;	// wait for reset sequence to end
 		
