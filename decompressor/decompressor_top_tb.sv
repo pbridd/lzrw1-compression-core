@@ -73,8 +73,8 @@ module decompressor_top_tb;
 		tv_control_word_filename = "basic_compression_cw.bin";
 
 		// get first testvectors
-		getTestVectors(tv_compresed_filename, tv_decompressed_filename, tv_control_word_filename,
-			tv_compressed_array, tv_decompressed_array, tv_control_word_filename);
+		getTestVectors(tv_compressed_filename, tv_decompressed_filename, tv_control_word_filename,
+			tv_compressed_array, tv_decompressed_array, tv_control_word_array);
 
 
 	end	
