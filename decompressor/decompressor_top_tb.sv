@@ -73,6 +73,12 @@ module decompressor_top_tb;
 		tv_decompressed_filename = "test_vectors/basic_compression_d.bin";
 		tv_control_word_filename = "test_vectors/basic_compression_cw.bin";
 
+		for(int k = 0; k < MAX_FILE_SIZE; k++) begin
+			tv_compressed_array[k] = '0;
+			tv_control_word_array[k] = '0;
+			tv_decompressed_array[k] = '0;
+		end
+
 		// get first testvectors
 		getTestVectors(tv_compressed_filename, tv_decompressed_filename, tv_control_word_filename,
 			tv_compressed_array, tv_decompressed_array, tv_control_word_array);
@@ -83,12 +89,6 @@ module decompressor_top_tb;
 	// feed stimulus in
 	initial begin
 		// initialize the decompressor
-		for(int k = 0; k < MAX_FILE_SIZE; k++) begin
-			tv_compressed_array[k] = '0;
-			tv_control_word_array[k] = '0;
-			tv_decompressed_array[k] = '0;
-		end
-
 		dut_data_in = '0;
 		dut_control_word_in = '0;
 		dut_data_in_valid = '0;
