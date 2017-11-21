@@ -8,7 +8,7 @@ module decompressor_top_tb;
 
 	logic[15:0] tv_compressed_array[MAX_FILE_SIZE-1:0];
 	byte tv_decompressed_array[MAX_FILE_SIZE:0];
-	logic[7:0] tv_control_word_array[MAX_FILE_SIZE-1:0];
+	logic[0:7] tv_control_word_array[MAX_FILE_SIZE-1:0];
 
 	logic[7:0] test_output_byte_array[MAX_FILE_SIZE-1:0];
 
@@ -22,7 +22,7 @@ module decompressor_top_tb;
 	// TASKS
 	task getTestVectors(input string compressed_filename, decompressed_filename, control_word_filename,
 		output logic[15:0] compressed_array[MAX_FILE_SIZE-1:0], output byte decompressed_array[MAX_FILE_SIZE:0],
-		output logic[7:0] control_word_array[MAX_FILE_SIZE-1:0]);
+		output logic[0:7] control_word_array[MAX_FILE_SIZE-1:0]);
 		int compressed_file, decompressed_file, control_word_file;
 		int temp_int;
 
