@@ -52,7 +52,7 @@ module decompressor_top_tb;
 			$finish;
 		end
 		else
-			temp_int = $fread(compressed_array, control_word_file);
+			temp_int = $fread(control_word_array, control_word_file);
 	endtask
 
 	task reset_decompressor;
@@ -83,6 +83,16 @@ module decompressor_top_tb;
 	// feed stimulus in
 	initial begin
 		// initialize the decompressor
+		for(int k = 0; k < MAX_FILE_SIZE; k++) begin
+			tv_compressed_array[k] = '0;
+			tv_control_word_array[k] = '0;
+			tv_decompressed_array[k] = '0;
+		end
+
+		dut_data_in = '0;
+		dut_control_word_in = '0;
+		dut_data_in_valid = '0;
+
 		reset_decompressor;
 
 
