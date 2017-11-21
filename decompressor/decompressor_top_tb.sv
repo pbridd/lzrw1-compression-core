@@ -24,6 +24,7 @@ module decompressor_top_tb;
 		output logic[15:0] compressed_array[MAX_FILE_SIZE-1:0], output byte decompressed_array[MAX_FILE_SIZE:0],
 		output logic control_word_array[MAX_FILE_SIZE-1:0]);
 		int compressed_file, decompressed_file, control_word_file;
+		int temp_int;
 
 		// process the compressed file
 		compressed_file = $fopen(compressed_filename, "r");
@@ -32,7 +33,7 @@ module decompressor_top_tb;
 			$finish;
 		end
 		else
-			$fread(compressed_array, compressed_file);
+			temp_int = $fread(compressed_array, compressed_file);
 		
 
 		//process the decompressed file
@@ -42,7 +43,7 @@ module decompressor_top_tb;
 			$finish;
 		end
 		else
-			$fread(compressed_array, decompressed_file);
+			temp_int = $fread(compressed_array, decompressed_file);
 
 		// process the control word file
 		control_word_file = $fopen(compressed_filename, "r");
@@ -51,7 +52,7 @@ module decompressor_top_tb;
 			$finish;
 		end
 		else
-			$fread(compressed_array, control_word_file);
+			temp_int = $fread(compressed_array, control_word_file);
 	endtask
 
 	task reset_decompressor;
@@ -68,9 +69,9 @@ module decompressor_top_tb;
 	//	populate test vectors	
 	initial begin
 		// 1. assign the first set of testvector files
-		tv_compressed_filename = "basic_compression_c.bin";
-		tv_decompressed_filename = "basic_compression_d.bin";
-		tv_control_word_filename = "basic_compression_cw.bin";
+		tv_compressed_filename = "test_vectors/basic_compression_c.bin";
+		tv_decompressed_filename = "test_vectors/basic_compression_d.bin";
+		tv_control_word_filename = "test_vectors/basic_compression_cw.bin";
 
 		// get first testvectors
 		getTestVectors(tv_compressed_filename, tv_decompressed_filename, tv_control_word_filename,
