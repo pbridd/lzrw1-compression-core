@@ -129,8 +129,7 @@ module decompressor_top_tb;
 
 	// capture data out
 	initial begin
-		automatic int errors = 0;
-		automatic int last_index = 0;
+		
 		last_address_captured = 0;
 
 		wait_for_decompressor_reset;	// wait for reset sequence to end
@@ -146,12 +145,11 @@ module decompressor_top_tb;
 
 	// data out checker
 	initial begin
+		utomatic int errors = 0;
 		// see if input has finished
-		@(posedge input_done_flag) begin
-			last_index = j;
-		end
+		@(posedge input_done_flag);
 		// check the output data against the test vector
-		for(int j = 0; j <= last_index; j++) begin
+		for(int j = 0; j <= last_address_captured; j++) begin
 			assert(test_output_byte_array[j] === tv_decompressed_array[j])
 			else begin
 				$error("-E- Actual output %c did not match expected output %c at index %d", test_output_byte_array[j], tv_decompressed_array[j], j);
