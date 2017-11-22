@@ -136,7 +136,7 @@ module decompressor_top_tb;
 		
 		for(int j = 0; j < MAX_FILE_SIZE; j++) begin
 			@(dut_out_valid); 			// wait until the output byte is valid
-				test_output_byte_array[j] = dut_decompressed_byte;
+				#0 test_output_byte_array[j] = dut_decompressed_byte;
 				last_address_captured = j;
 			@(posedge clock);			// wait at least until the next clock for the next byte
 		end
