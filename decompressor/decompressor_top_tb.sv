@@ -145,7 +145,7 @@ module decompressor_top_tb;
 
 	// data out checker
 	initial begin
-		utomatic int errors = 0;
+		automatic int errors = 0;
 		// see if input has finished
 		@(posedge input_done_flag);
 		// check the output data against the test vector
