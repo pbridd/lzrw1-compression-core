@@ -102,6 +102,9 @@ module decompressor_top_tb;
 			// make sure we're passing valid data in
 			if(tv_compressed_array[i] === 0 || ^tv_compressed_array[i] === 1'bX) begin
 				$display("Data input terminated at iteration %d", i);
+				dut_data_in = '0;
+				dut_control_word_in = '0;
+				dut_data_in_valid = '0;
 				break;
 			end
 			
@@ -117,6 +120,7 @@ module decompressor_top_tb;
 	// capture data out
 	initial begin
 		automatic int errors = 0;
+		automatic int last_index = 0;
 
 		wait_for_decompressor_reset;	// wait for reset sequence to end
 		
@@ -124,11 +128,14 @@ module decompressor_top_tb;
 			@(dut_out_valid); 			// wait until the output byte is valid
 				test_output_byte_array[j] = dut_decompressed_byte;
 			@(posedge clock);			// wait at least until the next clock for the next byte
+			if(tv_compressed_array[i] === 0 || ^tv_compressed_array[i] === 1'bX) begin
+				last_index = j;
+			end
 		end
 
 
 		// check the output data against the test vector
-		for(int j = 0; j < MAX_FILE_SIZE; j++) begin
+		for(int j = 0; j <= last_index; j++) begin
 			assert(test_output_byte_array[j] === tv_decompressed_array[j])
 			else begin
 				$error("-E- Actual output %c did not match expected output %c at index %d", test_output_byte_array[j], tv_decompressed_array[j], j);
@@ -162,7 +169,8 @@ module decompressor_top_tb;
 	endtask
 
 	// instantiation of decompressor
- 	decompressor_top decompressor_dut(
+ 	decompressor_top #(.HISTORY_SIZE(256))
+ 		decompressor_dut(
  		.clock(clock),								// clock input
 		.reset(reset),								// reset input
 		.data_in(dut_data_in),						// The 2 byte data-in field

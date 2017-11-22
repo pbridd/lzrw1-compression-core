@@ -105,24 +105,25 @@ module decompressor_top(
 					data_in_fp_next = data_in;
 					control_word_in_fp_next = control_word_in;
 
-					// 2. write data to the history buffer and increment history pointer
-					history_buffer_wr_en = 1'b1;
-					if (history_in_addr < HISTORY_SIZE-1)
-						history_in_addr_next = history_in_addr + 1;
-					else
-						history_in_addr_next = '0;
+					
 
-					// 3. determine the next state
+					// 2. determine the next state
 					if(control_word_in == 1'b0) 
+						// 3a. write data to the history buffer and increment history pointer
+						history_buffer_wr_en = 1'b1;
+						if (history_in_addr < HISTORY_SIZE-1)
+							history_in_addr_next = history_in_addr + 1;
+						else
+							history_in_addr_next = '0;
 						decomp_state_next = PASS_THROUGH;
 					else begin
 						decomp_state_next = DECOMPRESS;
-						// check to see if we will roll over
+						//3b. check to see if we will roll over
 						if(history_in_addr  > data_in.compressed_objects.offset) begin
 							history_out_addr_next = history_in_addr - data_in.compressed_objects.offset;
 							history_max_addr_next = history_in_addr - data_in.compressed_objects.offset + data_in.compressed_objects.length - 1;
 						end
-						// if we will roll over, perform special calculations
+						//4b. if we will roll over, perform special calculations
 						else begin
 							history_out_addr_next = HISTORY_SIZE-1-(data_in.compressed_objects.offset - history_in_addr-1);
 							if(HISTORY_SIZE-1-history_out_addr_next <= (data_in.compressed_objects.length-1)) 
