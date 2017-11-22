@@ -19,6 +19,9 @@ module decompressor_top_tb;
 
 	string tv_compressed_filename, tv_control_word_filename, tv_decompressed_filename;
 
+	//internal flags
+	bit input_done_flag;
+
 	// TASKS
 	task getTestVectors(input string compressed_filename, decompressed_filename, control_word_filename,
 		output logic[15:0] compressed_array[MAX_FILE_SIZE-1:0], output byte decompressed_array[MAX_FILE_SIZE:0],
@@ -88,6 +91,9 @@ module decompressor_top_tb;
 
 	// feed stimulus in
 	initial begin
+		//initialize flags
+		input_done_flag = 1'b0;
+
 		// initialize the decompressor
 		dut_data_in = '0;
 		dut_control_word_in = '0;
@@ -105,6 +111,7 @@ module decompressor_top_tb;
 				dut_data_in = '0;
 				dut_control_word_in = '0;
 				dut_data_in_valid = '0;
+				input_done_flag = 1'b1;
 				break;
 			end
 			
@@ -129,7 +136,7 @@ module decompressor_top_tb;
 				test_output_byte_array[j] = dut_decompressed_byte;
 			@(posedge clock);			// wait at least until the next clock for the next byte
 			// see if input has finished
-			if(tv_compressed_array[i] === 0 || ^tv_compressed_array[i] === 1'bX) begin
+			if(input_done_flag) begin
 				last_index = j;
 			end
 		end
