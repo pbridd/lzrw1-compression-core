@@ -108,7 +108,7 @@ module decompressor_top(
 					
 
 					// 2. determine the next state
-					if(control_word_in == 1'b0) 
+					if(control_word_in == 1'b0) begin
 						// 3a. write data to the history buffer and increment history pointer
 						history_buffer_wr_en = 1'b1;
 						if (history_in_addr < HISTORY_SIZE-1)
@@ -116,6 +116,7 @@ module decompressor_top(
 						else
 							history_in_addr_next = '0;
 						decomp_state_next = PASS_THROUGH;
+					end
 					else begin
 						decomp_state_next = DECOMPRESS;
 						//3b. check to see if we will roll over

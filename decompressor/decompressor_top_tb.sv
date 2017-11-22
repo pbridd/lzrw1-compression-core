@@ -128,6 +128,7 @@ module decompressor_top_tb;
 			@(dut_out_valid); 			// wait until the output byte is valid
 				test_output_byte_array[j] = dut_decompressed_byte;
 			@(posedge clock);			// wait at least until the next clock for the next byte
+			// see if input has finished
 			if(tv_compressed_array[i] === 0 || ^tv_compressed_array[i] === 1'bX) begin
 				last_index = j;
 			end
