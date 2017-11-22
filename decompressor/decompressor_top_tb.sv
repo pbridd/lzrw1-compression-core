@@ -3,6 +3,8 @@ module decompressor_top_tb;
 	parameter CLOCK_TOGGLE_RATE = 5;
 	parameter MAX_FILE_SIZE = 4096;
 
+	localparam MAX_ADDRESS_WIDTH = $clog2(MAX_FILE_SIZE);
+
 	// signal declarations
 	logic clock, reset;
 
@@ -20,7 +22,8 @@ module decompressor_top_tb;
 	string tv_compressed_filename, tv_control_word_filename, tv_decompressed_filename;
 
 	//internal flags
-	bit input_done_flag;
+	bit unsigned input_done_flag;
+	integer unsigned last_address_captured;  
 
 	// TASKS
 	task getTestVectors(input string compressed_filename, decompressed_filename, control_word_filename,
@@ -128,20 +131,25 @@ module decompressor_top_tb;
 	initial begin
 		automatic int errors = 0;
 		automatic int last_index = 0;
+		last_address_captured = 0;
 
 		wait_for_decompressor_reset;	// wait for reset sequence to end
 		
 		for(int j = 0; j < MAX_FILE_SIZE; j++) begin
 			@(dut_out_valid); 			// wait until the output byte is valid
 				test_output_byte_array[j] = dut_decompressed_byte;
+				last_address_captured = j;
 			@(posedge clock);			// wait at least until the next clock for the next byte
-			// see if input has finished
-			if(input_done_flag) begin
-				last_index = j;
-			end
 		end
 
+	end
 
+	// data out checker
+	initial begin
+		// see if input has finished
+		@(posedge input_done_flag) begin
+			last_index = j;
+		end
 		// check the output data against the test vector
 		for(int j = 0; j <= last_index; j++) begin
 			assert(test_output_byte_array[j] === tv_decompressed_array[j])
@@ -156,7 +164,6 @@ module decompressor_top_tb;
 
 		//display number of errors
 		$display("Total number of errors found was %d", errors);
-
 	end
 
 	// clock generator
