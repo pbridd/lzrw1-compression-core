@@ -13,17 +13,17 @@ compressed_t c_t;
 endinterface
 */
 
-module CompressedValues #(parameter  STRINGSIZE = 4096)(
-input clock, reset,
-input [3:0] length,	// from comparator
-input [11:0] Offset,	// from table
-input [7:0] OneByte,	// from table
-input controlBit,		// from table
+module CompressedValues (clock, reset, Done, length, Offset, OneByte, controlBit, compArray, controlWord);
+parameter  STRINGSIZE = 4096;
+
+input clock, reset, Done;
+input [3:0] length;	// from comparator
+input [11:0] Offset;	// from table
+input [7:0] OneByte;	// from table
+input controlBit;		// from table
 /*intf compArray,*/
-output logic [STRINGSIZE-1:0] [7:0] compArray,
-output logic [STRINGSIZE-1:0] controlWord);	
-
-
+output logic [STRINGSIZE-1:0] [7:0] compArray;
+output logic [STRINGSIZE-1:0] controlWord;	
 
 int controlPtr;
 int compressPtr;
@@ -36,21 +36,25 @@ always_ff @(posedge clock) begin
 		controlPtr = 0;
 		compressPtr = 0;
 	end
-	else if (controlBit) begin
+	
+	else if (controlBit && Done == 0) begin
 		compArray[compressPtr] <= {length,Offset[11:8]};
 		compArray[compressPtr] <= Offset[7:0];
 		compressPtr <= compressPtr+2;
 		controlWord[controlPtr] <= controlBit;
 		controlPtr <= controlPtr + 1;
 	end
-	else begin
+	else if (!Done) begin
 		compArray[compressPtr] <= OneByte;
 		compressPtr <= compressPtr + 1;
 		controlWord[controlPtr] <= controlBit;
 		controlPtr <= controlPtr + 1;
 	end
+	else begin
+		compressPtr <= compressPtr;
+		controlPtr <= controlPtr;
+	end
 end
-
-
+	
 
 endmodule

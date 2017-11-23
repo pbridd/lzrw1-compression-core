@@ -17,17 +17,14 @@ logic [31:0] tableValue;
 always_ff @(posedge clock) begin
 	if(reset) begin
 		TableOfPointers <= '0;
-		ControlBit <= 0;
 		//OldBytePosition <= '0;
 	end
 	else if (TableOfPointers[fromHash]== 0) begin
 		TableOfPointers[fromHash] <= BytePosition; 
-		ControlBit <= 0;
 	end
 	else begin
 		//OldBytePosition <= TableOfPointers[fromHash];
 		TableOfPointers[fromHash] <= BytePosition;
-		ControlBit <= 1;
 	end
 	
 	/*
@@ -38,7 +35,15 @@ always_ff @(posedge clock) begin
 	else OutByte <= '0;
 	*/
 end
-
+always_comb begin
+if(reset) ControlBit = 0;
+	else if (TableOfPointers[fromHash]== 0) begin 
+		ControlBit = 0;
+	end
+	else begin
+		ControlBit = 1;
+	end
+end
 assign Offset = TableOfPointers[fromHash] == 0 ? '0 : (BytePosition - TableOfPointers[fromHash] );
 assign OutByte = !ControlBit ? InByte : '0;
 assign OldBytePosition = TableOfPointers[fromHash];

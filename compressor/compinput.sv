@@ -41,7 +41,7 @@ always_ff @(posedge clock) begin
 		else count <= count;
 		// if first 3 bytes recieved, send to hash function
 		if(Length >= 3) bytePointer <= bytePointer + Length;
-		else bytePointer <= bytePointer + 1;
+		else  bytePointer <= bytePointer + 1;
 
 	end
 end
