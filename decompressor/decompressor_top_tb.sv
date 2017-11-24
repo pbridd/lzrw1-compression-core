@@ -129,16 +129,21 @@ module decompressor_top_tb;
 
 	// capture data out
 	initial begin
-		
+		automatic int j;
+		j = 0;
+
 		last_address_captured = 0;
 
 		wait_for_decompressor_reset;	// wait for reset sequence to end
 		
-		for(int j = 0; j < MAX_FILE_SIZE; j++) begin
-			@(dut_out_valid && negedge clock); 			// wait until the output byte is valid
+
+		forever begin
+			@(negedge clock); 			// wait until the output byte is valid
+			if(dut_out_valid) begin
 				test_output_byte_array[j] = dut_decompressed_byte;
 				last_address_captured = j;
-			
+				j++;
+			end
 		end
 
 	end
