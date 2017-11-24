@@ -1,4 +1,4 @@
-module compressor_top (clock, reset, valid, CurByte, Done, compArray, controlWord);
+module compressor_top (clock, reset, valid, CurByte, Done, compArray, controlWord,uniqnums);
 parameter STRINGSIZE = 4096;
 parameter TABLESIZE = 4096;
 
@@ -7,7 +7,7 @@ input [15:0] [7:0] CurByte;
 output Done;
 output logic [STRINGSIZE-1:0][7:0] compArray;
 output logic [STRINGSIZE-1:0] controlWord;
-
+input logic [4095:0][11:0] uniqnums;
 
 
 logic [11:0] offset; 
@@ -59,7 +59,7 @@ output logic [STRINGSIZE-1:0] controlWord);	*/
 
 CompressedValues #(STRINGSIZE) CV (clock,reset, Done,length,Offset,OneByte,ControlBit,compArray,controlWord);
 
-hashFunction hF (reset,toHash,fromHash);
+hashFunction hF (reset,uniqnums,toHash,fromHash);
 
 assign BytePosition = bytePtr;		// from compinput to table
 assign OneByte = OutByte; // from table to CompressedValues
