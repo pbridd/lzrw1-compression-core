@@ -152,12 +152,14 @@ module decompressor_top(
 				// wtite this to the history buffer
 				history_buffer_wr_en = 1'b1;
 				history_buffer_in = history_buffer_result;
+
+				// update the history in address
+				if (history_in_addr < HISTORY_SIZE-1)
+					history_in_addr_next = history_in_addr + 1;
+				else
+					history_in_addr_next = '0;
 				
 				if(history_out_addr != history_max_addr) begin
-					if (history_in_addr < HISTORY_SIZE-1)
-						history_in_addr_next = history_in_addr + 1;
-					else
-						history_in_addr_next = '0;
 					if (history_out_addr < HISTORY_SIZE-1)
 						history_out_addr_next = history_out_addr + 1;
 					else
@@ -170,7 +172,8 @@ module decompressor_top(
 		endcase
 	end
 
-	history_buffer myhist(
+	history_buffer #(.HISTORY_SIZE(HISTORY_SIZE))
+		 myhist(
 			.clock(clock),
 			.reset(reset), 
 			.rd_addr(history_out_addr),
