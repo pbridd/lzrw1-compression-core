@@ -38,22 +38,22 @@ task drive_data();
 endtask		: drive_data
 endclass : file_reader
 
-module testIt();
-
-/* Create object of type file_reader */
-file_reader fr;
-
-initial
-begin
-	fr = new();			// Create object and allocate memory
-		fr.read_data();		// Reading data from input text file
-		$display("-D Now driving data into DUT...");
-		fr.drive_data();	// This needs to be executed at every clock edge
-	#1000;
-end
-
-final
-begin
-	$display("-D FINAL :Done =%d",fr.done);
-end
-endmodule
+//module testIt();
+//
+///* Create object of type file_reader */
+//file_reader fr;
+//
+//initial
+//begin
+//	fr = new();			// Create object and allocate memory
+//		fr.read_data();		// Reading data from input text file
+//		$display("-D Now driving data into DUT...");
+//		fr.drive_data();	// This needs to be executed at every clock edge
+//	#1000;
+//end
+//
+//final
+//begin
+//	$display("-D FINAL :Done =%d",fr.done);
+//end
+//endmodule

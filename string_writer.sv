@@ -184,109 +184,109 @@ constraint ascii_char {temp_arr inside{[65:90],[97:122]};};
 endclass	: all_strings_same
 
 
-module string_writer();
-/* Declare handle for object of the class text_writer */
-text_writer tw;
-completely_random cr;
-moderately_random mr;
-all_strings_same ar;
-integer i1;
-int no_of_words;
-int random_no,j;
-string str1;
-initial 
-begin
-	tw = new();	// Create the object and allocate memory
-
-	randcase
-	0 : 	begin
-		cr = new();
-		tw = cr;
-		cr.randomize();
-		no_of_words = cr.no_of_characters;
-		for(int i=0;i<no_of_words;i++)
-			begin
-			cr.randomize();
-			tw.str_gen();
-			end	
-		tw.open_file();
-		tw.write_to_file();
-		tw.close_file();
-		end
-
-	10 : 	begin
-		mr = new();
-		tw = mr;
-		mr.randomize();
-		no_of_words = mr.no_of_characters;
-		for(int i=0;i<no_of_words;i++)
-			begin
-			mr.randomize();
-			tw.str_gen();
-			end	
-		tw.open_file();
-		tw.write_to_file();
-		tw.close_file();
-		end
-
-	0 : 	begin
-		ar = new();
-		tw = ar;
-		ar.randomize();
-		no_of_words = ar.no_of_characters;
-		for(int i=0;i<no_of_words;i++)
-			begin
-			ar.randomize();
-			tw.str_gen();
-			end	
-		tw.open_file();
-		tw.write_to_file();
-		tw.close_file();
-		end
-	endcase
-
-
-
-
-
-
-
-	////cr = new();	
-	////mr = new();
-	//ar = new();
-	//ar.randomize();
-	////mr.randomize();
-	////cr.randomize();
-	//
-	//no_of_words = ar.no_of_characters;
-	//$display("-D\t no_of_words=%0d",no_of_words);
-	////tw = cr;
-	//tw = ar;
-	////for(int i=0;i<10;i++)
-	//begin
-	////j = $urandom;
-	//random_no=tw.seed_gen();
-	//$display("Random number is %d  and j is %d",random_no,j);
-	//for(int i=0;i<no_of_words%10;i++)
-	//begin
-	//$display("-D\t no_of_words=%0d",no_of_words);
-	//ar.randomize();
-	////cr.randomize();
-	//tw.str_gen();
-	//end
-	//tw.open_file();
-	//for(int i=0;i<no_of_words%10;i++)
-	//begin
-	//tw.write_to_file();
-	//end
-	//tw.close_file();
-	////tw.randomize();	// Randomizes the properties/variiables of the object 
-	////i1 = tw.file_open();
-	////str1 = tw.make_str();
-	////$display("str 1 is %p",str1);
-	////$fdisplay(i1," String is ",str1);
-	////$fwrite(i1," String is ",str1);
-	//end
-	////$fclose(i1);
-end
-endmodule : string_writer
+//module string_writer();
+///* Declare handle for object of the class text_writer */
+//text_writer tw;
+//completely_random cr;
+//moderately_random mr;
+//all_strings_same ar;
+//integer i1;
+//int no_of_words;
+//int random_no,j;
+//string str1;
+//initial 
+//begin
+//	tw = new();	// Create the object and allocate memory
+//
+//	randcase
+//	0 : 	begin
+//		cr = new();
+//		tw = cr;
+//		cr.randomize();
+//		no_of_words = cr.no_of_characters;
+//		for(int i=0;i<no_of_words;i++)
+//			begin
+//			cr.randomize();
+//			tw.str_gen();
+//			end	
+//		tw.open_file();
+//		tw.write_to_file();
+//		tw.close_file();
+//		end
+//
+//	10 : 	begin
+//		mr = new();
+//		tw = mr;
+//		mr.randomize();
+//		no_of_words = mr.no_of_characters;
+//		for(int i=0;i<no_of_words;i++)
+//			begin
+//			mr.randomize();
+//			tw.str_gen();
+//			end	
+//		tw.open_file();
+//		tw.write_to_file();
+//		tw.close_file();
+//		end
+//
+//	0 : 	begin
+//		ar = new();
+//		tw = ar;
+//		ar.randomize();
+//		no_of_words = ar.no_of_characters;
+//		for(int i=0;i<no_of_words;i++)
+//			begin
+//			ar.randomize();
+//			tw.str_gen();
+//			end	
+//		tw.open_file();
+//		tw.write_to_file();
+//		tw.close_file();
+//		end
+//	endcase
+//
+//
+//
+//
+//
+//
+//
+//	////cr = new();	
+//	////mr = new();
+//	//ar = new();
+//	//ar.randomize();
+//	////mr.randomize();
+//	////cr.randomize();
+//	//
+//	//no_of_words = ar.no_of_characters;
+//	//$display("-D\t no_of_words=%0d",no_of_words);
+//	////tw = cr;
+//	//tw = ar;
+//	////for(int i=0;i<10;i++)
+//	//begin
+//	////j = $urandom;
+//	//random_no=tw.seed_gen();
+//	//$display("Random number is %d  and j is %d",random_no,j);
+//	//for(int i=0;i<no_of_words%10;i++)
+//	//begin
+//	//$display("-D\t no_of_words=%0d",no_of_words);
+//	//ar.randomize();
+//	////cr.randomize();
+//	//tw.str_gen();
+//	//end
+//	//tw.open_file();
+//	//for(int i=0;i<no_of_words%10;i++)
+//	//begin
+//	//tw.write_to_file();
+//	//end
+//	//tw.close_file();
+//	////tw.randomize();	// Randomizes the properties/variiables of the object 
+//	////i1 = tw.file_open();
+//	////str1 = tw.make_str();
+//	////$display("str 1 is %p",str1);
+//	////$fdisplay(i1," String is ",str1);
+//	////$fwrite(i1," String is ",str1);
+//	//end
+//	////$fclose(i1);
+//end
+//endmodule : string_writer
