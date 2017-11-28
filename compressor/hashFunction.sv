@@ -1,13 +1,13 @@
-module hashFunction(
+module hashFunction #(RANDTABLE=16523)(
 input reset,
-input [4095:0][11:0] uniqnums, /* table of all unique numbers from testbench*/
+input [RANDTABLE:0][11:0] uniqnums, /* table of all unique numbers from testbench*/
 input [23:0] toHash, /* from compinput */
 output logic [11:0] fromHash); /* to tableofPtr*/
 
 
 logic [11:0]index_part_1 ;
 logic [11:0]index_part_2 ;
-//logic [3:0]index_part_3 ;
+//logic [11:0]index_part_3 ;
 //int seed_val = 40543;
 
 /* Combinational logic to model hash function */
@@ -26,9 +26,9 @@ index_part_1 = uniqnums[toHash[23:16]];
 	fromHash =  uniqnums[0 ^ index_part_2];
 end
 else begin
-	index_part_1 = uniqnums[toHash[23:16]];
-	index_part_2 =  uniqnums[toHash[15:8] ^ index_part_1];
-	fromHash =  uniqnums[toHash[7:0] ^ index_part_2];
+	index_part_1 = uniqnums[toHash[7:0] ];
+	index_part_2 =  uniqnums[toHash[15:8] ^ index_part_1 ];
+	fromHash =  uniqnums[toHash[23:16] ^ index_part_2 ];
 end	
 
 

@@ -39,12 +39,12 @@ always_ff @(posedge clock) begin
 	
 	else if (controlBit && Done == 0) begin
 		compArray[compressPtr] <= {length,Offset[11:8]};
-		compArray[compressPtr] <= Offset[7:0];
+		compArray[compressPtr+1] <= Offset[7:0];
 		compressPtr <= compressPtr+2;
 		controlWord[controlPtr] <= controlBit;
 		controlPtr <= controlPtr + 1;
 	end
-	else if (!Done) begin
+	else if (!Done && !controlBit) begin
 		compArray[compressPtr] <= OneByte;
 		compressPtr <= compressPtr + 1;
 		controlWord[controlPtr] <= controlBit;

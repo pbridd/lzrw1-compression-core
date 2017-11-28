@@ -2,12 +2,13 @@ module compressor_top (clock, reset, valid, CurByte, Done, compArray, controlWor
 parameter STRINGSIZE = 4096;
 parameter TABLESIZE = 4096;
 
+parameter RANDTABLE = 16523;
 input clock, reset, valid;
 input [15:0] [7:0] CurByte;
 output Done;
 output logic [STRINGSIZE-1:0][7:0] compArray;
 output logic [STRINGSIZE-1:0] controlWord;
-input logic [4095:0][11:0] uniqnums;
+input logic [RANDTABLE:0][11:0] uniqnums;
 
 
 logic [11:0] offset; 
@@ -45,7 +46,7 @@ output logic [7:0] OutByte
 output logic [11:0] OldBytePosition,	// to compinput(offset)
 output logic[11:0] Offset,				// to CompressedValues
 output bit ControlBit);		*/
-tableOfPtr #(TABLESIZE) tob (clock,reset,InByte,fromHash,BytePosition,OutByte,OldBytePosition,Offset,ControlBit);
+tableOfPtr #(TABLESIZE) tob (clock,reset,InByte,fromHash,BytePosition,length,OutByte,OldBytePosition,Offset,ControlBit);
 
 /*
 input clock, reset,
@@ -59,7 +60,7 @@ output logic [STRINGSIZE-1:0] controlWord);	*/
 
 CompressedValues #(STRINGSIZE) CV (clock,reset, Done,length,Offset,OneByte,ControlBit,compArray,controlWord);
 
-hashFunction hF (reset,uniqnums,toHash,fromHash);
+hashFunction #(RANDTABLE) hF (reset,uniqnums,toHash,fromHash);
 
 assign BytePosition = bytePtr;		// from compinput to table
 assign OneByte = OutByte; // from table to CompressedValues

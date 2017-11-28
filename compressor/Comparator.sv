@@ -11,16 +11,17 @@ always_comb begin
 		Length = '0;
 		count = 0;
 	end
-	else if (ControlBit) begin
+	else //if (ControlBit) begin
+	begin
 		count = 0;
-		for (int i = 0; i < 17; i++) begin
+		for (int i = 0; i < 16; i++) begin
 			if(CurBytes[i] == BytesAtOffset[i]) count++;
 			else begin 
 				Length <= count;
-				continue;
+				break;
 			end
 		end
 	end
-	else Length <= '0;
+	//else Length <= '0;
 end
 endmodule
