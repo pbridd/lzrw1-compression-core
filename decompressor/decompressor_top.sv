@@ -11,7 +11,6 @@ module decompressor_top(
 		data_in,			// The 2 byte data-in field
 		control_word_in,	// The control word that corresponds to data-in
 		data_in_valid,		// when this is 1'b1, the decompressor will use the inputs
-//		history_full,		// FYI: the history buffer is full. Output might not be valid.
 		decompressed_byte,  // the decompressed output
 		out_valid,			// whether the output is valid. Don't use data if 0.
 		decompressor_busy	// whether the decompressor is busy. When this is 1'b1, the decompressor will ignore all data inputs.
@@ -184,6 +183,35 @@ module decompressor_top(
 		);
 
 
+
+	// assertions
+	property notidlebusy_p;
+		@(posedge clock)
+			disable iff(reset)
+			((decomp_state === IDLE) |-> (decompressor_busy === 1'b0));
+	endproperty
+	notidlebusy_a : assert property(notidlebusy_p) else $error("decompressor_busy was asserted while the decompressor state was IDLE");
+
+	property datainnotxwhenvalid_p;
+		@(posedge clock)
+			disable iff(reset)
+			((data_in_valid === 1'b1) |-> not $isunknown(data_in));
+	endproperty
+	datainnotxwhenvalid_a : assert property(datainnotxwhenvalid_p) else $error("Data in was X when data_in_valid was 1'b1");
+
+	property controlnotxwhenvalid_p;
+		@(posedge clock)
+			disable iff(reset)
+			((data_in_valid === 1'b1) |-> not $isunknown(control_word_in));
+	endproperty
+	controlnotxwhenvalid_a : assert property(controlnotxwhenvalid_p) else $error("control_word_in in was X when data_in_valid was 1'b1");
+
+	property dontoutputx_p;
+		@(posedge clock)
+			disable iff(reset)
+			((out_valid === 1'b1) |-> not $isunknown(decompressed_byte));
+	endproperty
+	dontoutputx_a : assert property(dontoutputx_p) else $error("decompressed_byte was X when out_valid was 1'b1");
 
 
 endmodule
