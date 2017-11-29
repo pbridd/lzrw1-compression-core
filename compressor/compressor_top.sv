@@ -8,6 +8,7 @@ input [15:0] [7:0] CurByte;
 output Done;
 output logic [STRINGSIZE-1:0][7:0] compArray;
 output logic [STRINGSIZE-1:0] controlWord;
+output integer controlPtr;	// Is this legal?
 input logic [RANDTABLE:0][11:0] uniqnums;
 
 
@@ -58,7 +59,7 @@ intf compArray,
 output logic [STRINGSIZE-1:0] controlWord);	*/
 //intf #(STRINGSIZE) InterfaceArray ();
 
-CompressedValues #(STRINGSIZE) CV (clock,reset, Done,length,Offset,OneByte,ControlBit,compArray,controlWord);
+CompressedValues #(STRINGSIZE) CV (clock,reset, Done,length,Offset,OneByte,ControlBit,compArray,controlWord,controlPtr);
 
 hashFunction #(RANDTABLE) hF (reset,uniqnums,toHash,fromHash);
 
