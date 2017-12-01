@@ -57,6 +57,10 @@ def write_out_binary_data(compressed_data, decompressed_data, vector_name):
                 temp_data = 0
             else:
                 temp_count += 1
+        # perform final write-out
+        if temp_count > 0:
+            temp_data << 31 - temp_count
+            control_word_file.write(temp_data.to_bytes(4, 'big'))
 
 
 
@@ -72,9 +76,9 @@ def compress_string(string_to_compress, max_match_length):
     #populate full char array
     for char in string_to_compress:
         full_char_array.append(char)
-
+    i = 0
     # iterate through all three char pairs and compress them
-    for i in range (0, len(string_to_compress)):
+    while i < len(string_to_compress):
         key = string_to_compress[i:i+3]
         curr_control_word = 0
         temp_index = -1
@@ -101,6 +105,7 @@ def compress_string(string_to_compress, max_match_length):
             literal = string_to_compress[i]
             hash_table[key] = (i, current_array_index)
             current_array_index += 1
+            i = i + 1
 
         # construct compressed data entry
         temp_compr = CompressedData(curr_control_word, length, offset, literal)
