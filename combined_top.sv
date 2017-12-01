@@ -42,21 +42,13 @@ module combined_top(
 	// state storage
 	combined_state_type comb_state, comb_state_next;
 
-	// pointer locations
-	logic [TABLE_ADDRESS_WIDTH-1:0][7:0] control_word_pointer, control_word_pointer_next,
-											compressed_pointer, compressed_pointer_next;
-
 	always_ff @(posedge clock or posedge reset) begin : proc_load_data
 		if(reset) begin
 			comb_state <= COMPRESS;
-			control_word_pointer <= '0;
-			compressed_pointer <= '0;
 			internal_controlPtr <= '0;
 			internal_dataPtr <= '0;
 		end else begin
 			comb_state <= comb_state_next;
-			control_word_pointer <= control_word_pointer_next;
-			compressed_pointer <= compressed_pointer_next;
 			internal_controlPtr <= internal_controlPtr_next;
 			internal_dataPtr <= internal_dataPtr_next;
 		end
@@ -106,7 +98,11 @@ module combined_top(
 
 
 		// module instantiations
-	compressor_top compressor(
+	compressor_top #(
+			.STRINGSIZE(STRINGSIZE),
+			.TABLESIZE(TABLESIZE)
+		) 
+		compressor(
 			.clock(clock),
 			.reset(reset),
 			.valid(valid),
@@ -117,7 +113,10 @@ module combined_top(
 			.uniqnums(),
 			.controlPtr(c_controlPtr)
 		);
-	decompressor_top decompressor(
+	decompressor_top #( 
+		.HISTORY_SIZE(STRINGSIZE),
+		)
+		decompressor(
 			.clock(clock),
 			.reset(reset),
 			.data_in(d_data_in),
