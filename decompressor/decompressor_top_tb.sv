@@ -179,13 +179,13 @@ module decompressor_top_tb;
 		// whether or not there were errors, display the strings 
 		$write("Expected string: ");
 		for (int k = 0; k <= last_address_captured; k++) begin
-			write("%c", local_tv_decompressed_array[k]);
+			$write("%c", local_tv_decompressed_array[k]);
 		end
 		$write("\n");
 
 		$write("Actual string: ");
 		for (int k = 0; k <= last_address_captured; k++) begin
-			write("%c", test_output_byte_array[k]);
+			$write("%c", test_output_byte_array[k]);
 		end
 		$write("\n");
 
