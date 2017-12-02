@@ -88,7 +88,7 @@ module decompressor_top_tb;
 			local_tv_compressed_array[k] = '0;
 			local_tv_control_word_array[k] = '0;
 			local_tv_decompressed_array[k] = '0;
-			local_test_output_byte_array[k] = '0;
+			test_output_byte_array[k] = '0;
 		end
 
 		// get test vectors from file
@@ -152,7 +152,7 @@ module decompressor_top_tb;
 		
 		forever begin
 			@(negedge clock); 			// wait until the output byte is valid
-			if(inpuy_done_flag)
+			if(input_done_flag)
 				break;
 			if(dut_out_valid) begin
 				test_output_byte_array[j] = dut_decompressed_byte;
