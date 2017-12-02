@@ -123,7 +123,7 @@ module decompressor_top_tb;
 		for(int i = 0; i < MAX_FILE_SIZE; i++) begin
 
 			// make sure we're passing valid data in
-			if(local_tv_compressed_array[i] === 0 || ^local_tv_compressed_array[i] === 1'bX || local_tv_control_word_array === 1'bX) begin
+			if(local_tv_compressed_array[i] === 0 || ^local_tv_compressed_array[i] === 1'bX || local_tv_control_word_array[i] === 1'bX) begin
 				$display("Data input terminated at iteration %d", i);
 				dut_data_in = '0;
 				dut_control_word_in = '0;
