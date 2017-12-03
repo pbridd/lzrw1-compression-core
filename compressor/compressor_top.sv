@@ -1,5 +1,5 @@
 module compressor_top (clock, reset, valid, CurByte, Done, compArray, controlWord);
-parameter STRINGSIZE = 4096;
+parameter STRINGSIZE = 400;
 parameter TABLESIZE = 4096;
 
 parameter RANDTABLE = 16523;
