@@ -213,7 +213,9 @@ module decompressor_top_tb;
 		string tv_compressed_filename, tv_control_word_filename, tv_decompressed_filename;
 		int return_value;
 		int num_tests_failed;
+		int num_auto_tests_to_run;
 		num_tests_failed = 0;
+		num_auto_tests_to_run = 10;
 
 		$display("Starting manually generated test 1...");
 		// 1. assign the first set of testvector files
@@ -228,7 +230,7 @@ module decompressor_top_tb;
 			num_tests_failed ++;
 
 		$display("Starting automatically generated testvectors...");
-		for (int testnum = 0; testnum < 10; testnum ++) begin
+		for (int testnum = 0; testnum < num_auto_tests_to_run; testnum ++) begin
 			$display("Starting automatically generated test %d...", testnum);
 			// 1. assign the first set of testvector files
 			$sformat(tv_compressed_filename, "test_vectors/generated_tv_%0d_c.bin", testnum);
@@ -242,7 +244,7 @@ module decompressor_top_tb;
 				num_tests_failed ++;
 		end
 
-		$display("Total tests failed was %0d out of 1 + %0d", num_tests_failed, testnum);
+		$display("Total tests failed was %0d out of 1 + %0d", num_tests_failed, num_auto_tests_to_run);
 	end	
 
 
