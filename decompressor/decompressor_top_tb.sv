@@ -138,7 +138,7 @@ module decompressor_top_tb;
 				dut_data_in = {local_tv_compressed_array[current_compressed_byte], local_tv_compressed_array[current_compressed_byte+1]}; 
 				current_compressed_byte += 2;
 			else begin
-				dut_data_in = local_tv_compressed_array[current_compressed_byte];
+				dut_data_in = {8'b0 , local_tv_compressed_array[current_compressed_byte]};
 				current_compressed_byte += 1;
 			end
 			dut_control_word_in = local_tv_control_word_array[i/8][i%8];
