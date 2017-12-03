@@ -220,7 +220,7 @@ module decompressor_top_tb;
 
 		$display("Starting automatically generated testvectors...");
 		for (int testnum = 0; testnum < 10; testnum ++) begin
-			$display("Starting automatically generated test %d...", testnum)
+			$display("Starting automatically generated test %d...", testnum);
 			// 1. assign the first set of testvector files
 			tv_compressed_filename = $sformat("test_vectors/generated_tv_%d_c.bin", testnum);
 			tv_decompressed_filename = $sformat("test_vectors/generated_tv_%d_d.bin", testnum);
@@ -242,11 +242,11 @@ module decompressor_top_tb;
 			#CLOCK_TOGGLE_RATE clock = ~clock;
 	end
 
-	task wait_until_rising_edge; begin 
+	task wait_until_rising_edge; 
 		@(posedge clock);
 	endtask
 
-	task wait_until_falling_edge; begin 
+	task wait_until_falling_edge;
 		@(negedge clock);
 	endtask
 
