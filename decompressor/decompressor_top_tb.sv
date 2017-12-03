@@ -222,9 +222,9 @@ module decompressor_top_tb;
 		for (int testnum = 0; testnum < 10; testnum ++) begin
 			$display("Starting automatically generated test %d...", testnum);
 			// 1. assign the first set of testvector files
-			tv_compressed_filename = $sformat("test_vectors/generated_tv_%d_c.bin", testnum);
-			tv_decompressed_filename = $sformat("test_vectors/generated_tv_%d_d.bin", testnum);
-			tv_control_word_filename = $sformat("test_vectors/generated_tv_%d_cw.bin", testnum);
+			$sformat(tv_compressed_filename, "test_vectors/generated_tv_%d_c.bin", testnum);
+			$sformat(tv_decompressed_filename, "test_vectors/generated_tv_%d_d.bin", testnum);
+			$sformat(tv_control_word_filename, "test_vectors/generated_tv_%d_cw.bin", testnum);
 			return_value = 0;
 
 			// get first testvectors
