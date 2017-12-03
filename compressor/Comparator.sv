@@ -17,7 +17,7 @@ always_comb begin
 		for (int i = 0; i < 16; i++) begin
 			if(CurBytes[i] == BytesAtOffset[i]) count++;
 			else begin 
-				Length = count;
+				Length <= count;
 				break;
 			end
 		end
