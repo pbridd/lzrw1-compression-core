@@ -1,15 +1,16 @@
 module decompressor_top_tb;
 	// parameter declarations
 	parameter CLOCK_TOGGLE_RATE = 5;
-	parameter MAX_FILE_SIZE = 4096;
+	parameter FILE_SIZE = 256;
+	parameter NUM_AUTO_TESTS = 10;
 
-	localparam MAX_ADDRESS_WIDTH = $clog2(MAX_FILE_SIZE);
+	localparam MAX_ADDRESS_WIDTH = $clog2(FILE_SIZE);
 
 	// signal declarations
 	logic clock, reset;
 
 
-	logic[7:0] test_output_byte_array[MAX_FILE_SIZE-1:0];
+	logic[7:0] test_output_byte_array[FILE_SIZE-1:0];
 
 	//inputs and outputs to decompressor module
 	logic[15:0] dut_data_in;
@@ -25,8 +26,8 @@ module decompressor_top_tb;
 	// Essential tasks
 	////////////////////////////////////////////////////////////////////////////////////////////////////	
 	task getTestVectors(input string compressed_filename, decompressed_filename, control_word_filename,
-		output logic[7:0] compressed_array[MAX_FILE_SIZE-1:0], output logic[7:0] decompressed_array[MAX_FILE_SIZE-1:0],
-		output logic[0:7] control_word_array[MAX_FILE_SIZE-1:0]);
+		output logic[7:0] compressed_array[FILE_SIZE-1:0], output logic[7:0] decompressed_array[FILE_SIZE-1:0],
+		output logic[0:7] control_word_array[FILE_SIZE-1:0]);
 		int compressed_file, decompressed_file, control_word_file;
 		int temp_int;
 
@@ -76,15 +77,15 @@ module decompressor_top_tb;
 	endtask : initialize_global_values
 
 	task run_testvector(input string tv_compressed_filename, tv_decompressed_filename, tv_control_word_filename, output int return_value);
-		logic[7:0] local_tv_compressed_array[MAX_FILE_SIZE-1:0];
-		logic[7:0] local_tv_decompressed_array[MAX_FILE_SIZE-1:0];
-		logic[0:7] local_tv_control_word_array[MAX_FILE_SIZE-1:0];
+		logic[7:0] local_tv_compressed_array[FILE_SIZE-1:0];
+		logic[7:0] local_tv_decompressed_array[FILE_SIZE-1:0];
+		logic[0:7] local_tv_control_word_array[FILE_SIZE-1:0];
 
 		// clear all global state
 		initialize_global_values;
 
 		// initialize the arrays
-		for(int k = 0; k < MAX_FILE_SIZE; k++) begin
+		for(int k = 0; k < FILE_SIZE; k++) begin
 			local_tv_compressed_array[k] = '0;
 			local_tv_control_word_array[k] = '0;
 			local_tv_decompressed_array[k] = '0;
@@ -104,9 +105,9 @@ module decompressor_top_tb;
 
 	endtask : run_testvector
 
-	task feed_in_testvectors(input logic[7:0] local_tv_compressed_array[MAX_FILE_SIZE-1:0], 
-		logic[7:0] local_tv_decompressed_array[MAX_FILE_SIZE-1:0],
-		logic[0:7] local_tv_control_word_array[MAX_FILE_SIZE-1:0]);
+	task feed_in_testvectors(input logic[7:0] local_tv_compressed_array[FILE_SIZE-1:0], 
+		logic[7:0] local_tv_decompressed_array[FILE_SIZE-1:0],
+		logic[0:7] local_tv_control_word_array[FILE_SIZE-1:0]);
 		integer current_compressed_byte;
 
 		current_compressed_byte = 0;
@@ -123,10 +124,10 @@ module decompressor_top_tb;
 
 
 		// feed in stimulus
-		for(int i = 0; i < MAX_FILE_SIZE; i++) begin
+		for(int i = 0; i < FILE_SIZE; i++) begin
 
 			// make sure we're passing valid data in
-			if(local_tv_compressed_array[current_compressed_byte] === 0 || ^local_tv_compressed_array[current_compressed_byte] === 1'bX || local_tv_control_word_array[i] === 1'bX || (local_tv_control_word_array[i/8][i%8] == 1'b1 && local_tv_compressed_array[current_compressed_byte+1] === 0 || ^local_tv_compressed_array[current_compressed_byte+1] === 1'bX)) begin
+			if(local_tv_compressed_array[current_compressed_byte] === 0 || ^local_tv_compressed_array[current_compressed_byte] === 1'bX || local_tv_control_word_array[i] === 1'bX || (local_tv_control_word_array[i/8][i%8] == 1'b1 && local_tv_compressed_array[current_compressed_byte+1] === 0 || ^local_tv_compressed_array[current_compressed_byte+1] === 1'bX) || i >= FILE_SIZE) begin
 				$display("Data input terminated at iteration %d", i);
 				dut_data_in = '0;
 				dut_control_word_in = '0;
@@ -171,7 +172,7 @@ module decompressor_top_tb;
 		end
 	endtask
 
-	task check_data_out(input logic[7:0] local_tv_decompressed_array[MAX_FILE_SIZE-1:0], output int errors_out);
+	task check_data_out(input logic[7:0] local_tv_decompressed_array[FILE_SIZE-1:0], output int errors_out);
 		automatic int errors;
 		errors = 0;
 
@@ -213,9 +214,7 @@ module decompressor_top_tb;
 		string tv_compressed_filename, tv_control_word_filename, tv_decompressed_filename;
 		int return_value;
 		int num_tests_failed;
-		int num_auto_tests_to_run;
 		num_tests_failed = 0;
-		num_auto_tests_to_run = 10;
 
 		$display("Starting manually generated test 1...");
 		// 1. assign the first set of testvector files
@@ -230,7 +229,7 @@ module decompressor_top_tb;
 			num_tests_failed ++;
 
 		$display("Starting automatically generated testvectors...");
-		for (int testnum = 0; testnum < num_auto_tests_to_run; testnum ++) begin
+		for (int testnum = 0; testnum < NUM_AUTO_TESTS; testnum ++) begin
 			$display("Starting automatically generated test %d...", testnum);
 			// 1. assign the first set of testvector files
 			$sformat(tv_compressed_filename, "test_vectors/generated_tv_%0d_c.bin", testnum);
@@ -244,7 +243,7 @@ module decompressor_top_tb;
 				num_tests_failed ++;
 		end
 
-		$display("Total tests failed was %0d out of 1 + %0d", num_tests_failed, num_auto_tests_to_run);
+		$display("Total tests failed was %0d out of 1 + %0d", num_tests_failed, NUM_AUTO_TESTS);
 	end	
 
 
