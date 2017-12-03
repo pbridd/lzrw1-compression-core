@@ -17,10 +17,11 @@ bit Done;
 logic[RANDTABLE:0][11:0] uniqnums;
 logic [STRINGSIZE - 1:0] controlWord;
 logic [STRINGSIZE-1:0][7:0] compArray;
-
+integer nums;
 int newPtr;
 logic [7:0] newByte;
-compressor_top #(STRINGSIZE,TABLESIZE,RANDTABLE) ctop (clock,reset,valid,CurByte,Done,compArray,controlWord,uniqnums);
+// compressor_top #(STRINGSIZE,TABLESIZE,RANDTABLE) ctop (clock,reset,valid,CurByte,Done,compArray,controlWord,uniqnums);
+compressor_top #(STRINGSIZE,TABLESIZE) ctop (clock,reset,valid,CurByte,Done,compArray,controlWord);
 int assertions_cnt;
 
 string s;

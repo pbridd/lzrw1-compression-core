@@ -48,26 +48,26 @@ end
 
 always_comb begin
 		if(reset) begin
-			toHash <= '0;
-		toCompare <= '0;
-		NextBytes <= '0;
+			toHash = '0;
+		toCompare = '0;
+		NextBytes = '0;
 		end
 		else if (bytePointer >= 1) begin
-			toHash <= {myHistory[bytePointer],myHistory[bytePointer+1],myHistory[bytePointer+2]};		
+			toHash = {myHistory[bytePointer],myHistory[bytePointer+1],myHistory[bytePointer+2]};		
 		end
 		else toHash <= toHash;
 		if ((myHistory[bytePointer] != 0) && (bytePointer - s_offset) > 15 && s_offset > 0 ) begin
-			toCompare <= myHistory[(s_offset) +: 16];
-			NextBytes <= myHistory[bytePointer +: 16];
+			toCompare = myHistory[(s_offset) +: 16];
+			NextBytes = myHistory[bytePointer +: 16];
 		end
 		else if ((myHistory[bytePointer] != 0)  && (bytePointer - s_offset) <= 15 && s_offset > 0 ) begin
 			for(int i = 0; i < bytePointer - offset; i++) begin
-				toCompare[i] <= myHistory[offset+i];
+				toCompare[i] = myHistory[offset+i];
 			end
-			NextBytes <= myHistory[bytePointer +: 16];
+			NextBytes = myHistory[bytePointer +: 16];
 		end
 		else toCompare <= '0;
-		NextBytes <= myHistory[bytePointer +: 16];
+		NextBytes = myHistory[bytePointer +: 16];
 end
 assign bytePtr = bytePointer;
 assign valueHistory = myHistory[bytePointer];
