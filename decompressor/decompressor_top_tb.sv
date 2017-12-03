@@ -206,7 +206,7 @@ module decompressor_top_tb;
 		int num_tests_failed;
 		num_tests_failed = 0;
 
-		$display("Starting manually generated test 1...")
+		$display("Starting manually generated test 1...");
 		// 1. assign the first set of testvector files
 		tv_compressed_filename = "test_vectors/basic_compression_c.bin";
 		tv_decompressed_filename = "test_vectors/basic_compression_d.bin";
@@ -218,7 +218,7 @@ module decompressor_top_tb;
 		if(return_value > 0)
 			num_tests_failed ++;
 
-		$display("Starting automatically generated testvectors...")
+		$display("Starting automatically generated testvectors...");
 		for (int testnum = 0; testnum < 10; testnum ++) begin
 			$display("Starting automatically generated test %d...", testnum)
 			// 1. assign the first set of testvector files
@@ -232,8 +232,6 @@ module decompressor_top_tb;
 			if(return_value > 0)
 				num_tests_failed ++;
 		end
-
-
 	end	
 
 
@@ -246,12 +244,10 @@ module decompressor_top_tb;
 
 	task wait_until_rising_edge; begin 
 		@(posedge clock);
-	end
 	endtask
 
 	task wait_until_falling_edge; begin 
 		@(negedge clock);
-	end
 	endtask
 
 	// instantiation of decompressor
