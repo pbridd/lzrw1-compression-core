@@ -34,7 +34,6 @@ module decompressor_top(
 	input  data_in_t data_in;
 	input  logic control_word_in;
 	input  logic data_in_valid;
-//	output logic history_full;
 	output logic[7:0] decompressed_byte;
 	output logic out_valid;
 	output logic decompressor_busy;
