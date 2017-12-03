@@ -25,7 +25,7 @@ module decompressor_top_tb;
 	// Essential tasks
 	////////////////////////////////////////////////////////////////////////////////////////////////////	
 	task getTestVectors(input string compressed_filename, decompressed_filename, control_word_filename,
-		output logic[15:0] compressed_array[MAX_FILE_SIZE-1:0], output logic[7:0] decompressed_array[MAX_FILE_SIZE:0],
+		output logic[7:0] compressed_array[MAX_FILE_SIZE-1:0], output logic[7:0] decompressed_array[MAX_FILE_SIZE-1:0],
 		output logic[0:7] control_word_array[MAX_FILE_SIZE-1:0]);
 		int compressed_file, decompressed_file, control_word_file;
 		int temp_int;
@@ -76,8 +76,8 @@ module decompressor_top_tb;
 	endtask : initialize_global_values
 
 	task run_testvector(input string tv_compressed_filename, tv_decompressed_filename, tv_control_word_filename, output int return_value);
-		logic[15:0] local_tv_compressed_array[MAX_FILE_SIZE-1:0];
-		logic[7:0] local_tv_decompressed_array[MAX_FILE_SIZE:0];
+		logic[7:0] local_tv_compressed_array[MAX_FILE_SIZE-1:0];
+		logic[7:0] local_tv_decompressed_array[MAX_FILE_SIZE-1:0];
 		logic[0:7] local_tv_control_word_array[MAX_FILE_SIZE-1:0];
 
 		// clear all global state
@@ -104,9 +104,12 @@ module decompressor_top_tb;
 
 	endtask : run_testvector
 
-	task feed_in_testvectors(input logic[15:0] local_tv_compressed_array[MAX_FILE_SIZE-1:0], 
-		logic[7:0] local_tv_decompressed_array[MAX_FILE_SIZE:0],
+	task feed_in_testvectors(input logic[7:0] local_tv_compressed_array[MAX_FILE_SIZE-1:0], 
+		logic[7:0] local_tv_decompressed_array[MAX_FILE_SIZE-1:0],
 		logic[0:7] local_tv_control_word_array[MAX_FILE_SIZE-1:0]);
+		integer current_compressed_byte;
+
+		current_compressed_byte = 0;
 		
 		//initialize flags
 		input_done_flag = 1'b0;
@@ -131,8 +134,13 @@ module decompressor_top_tb;
 				input_done_flag = 1'b1;
 				break;
 			end
-			
-			dut_data_in = local_tv_compressed_array[i];
+			if(dut_control_word_in = local_tv_control_word_array[i/8][i%8] == 1'b1)
+				dut_data_in = {local_tv_compressed_array[current_compressed_byte], local_tv_compressed_array[current_compressed_byte+1]}; 
+				current_compressed_byte += 2;
+			else begin
+				dut_data_in = local_tv_compressed_array[current_compressed_byte];
+				current_compressed_byte += 1;
+			end
 			dut_control_word_in = local_tv_control_word_array[i/8][i%8];
 			dut_data_in_valid = 1'b1;
 
@@ -162,7 +170,7 @@ module decompressor_top_tb;
 		end
 	endtask
 
-	task check_data_out(input logic[7:0] local_tv_decompressed_array[MAX_FILE_SIZE:0], output int errors_out);
+	task check_data_out(input logic[7:0] local_tv_decompressed_array[MAX_FILE_SIZE-1:0], output int errors_out);
 		automatic int errors;
 		errors = 0;
 
