@@ -163,7 +163,7 @@ module decompressor_top_tb;
 		
 		forever begin
 			@(negedge clock); 			// wait until the output byte is valid
-			if(j >= FILE_SIZE-1)
+			if(j > FILE_SIZE-1)
 				return;
 			if(dut_out_valid) begin
 				test_output_byte_array[j] = dut_decompressed_byte;
