@@ -47,7 +47,7 @@ class VectorGenerator:
                     temp_count += 1
             # perform final write-out
             if temp_count > 0:
-                temp_data << 31 - (temp_count-1)
+                temp_data = temp_data << 31 - (temp_count-1)
                 control_word_file.write(temp_data.to_bytes(4, 'big'))
 
 
