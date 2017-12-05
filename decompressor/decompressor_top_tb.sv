@@ -225,9 +225,9 @@ module decompressor_top_tb;
 		// return_value = 0;
 
 		// get first testvectors
-		run_testvector( tv_compressed_filename, tv_decompressed_filename, tv_control_word_filename, return_value);
-		if(return_value > 0)
-			num_tests_failed ++;
+		// run_testvector( tv_compressed_filename, tv_decompressed_filename, tv_control_word_filename, return_value);
+		// if(return_value > 0)
+		// 	num_tests_failed ++;
 
 		$display("Starting automatically generated testvectors...");
 		for (int testnum = 0; testnum < NUM_AUTO_TESTS; testnum ++) begin
