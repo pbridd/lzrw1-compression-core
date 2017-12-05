@@ -163,7 +163,7 @@ module decompressor_top_tb;
 		
 		forever begin
 			@(negedge clock); 			// wait until the output byte is valid
-			if(j >= FILE_SIZE)
+			if(j >= FILE_SIZE-1)
 				return;
 			if(dut_out_valid) begin
 				test_output_byte_array[j] = dut_decompressed_byte;
@@ -178,7 +178,7 @@ module decompressor_top_tb;
 		errors = 0;
 
 		// check the output data against the test vector
-		for(int j = 0; j <= last_address_captured; j++) begin
+		for(int j = 0; j < last_address_captured; j++) begin
 			assert(test_output_byte_array[j] === local_tv_decompressed_array[j])
 			else begin
 				$error("-E- Actual output %c did not match expected output %c at index %d", test_output_byte_array[j], local_tv_decompressed_array[j], j);
