@@ -3,6 +3,7 @@ module decompressor_top_tb;
 	parameter CLOCK_TOGGLE_RATE = 5;
 	parameter FILE_SIZE = 256;
 	parameter NUM_AUTO_TESTS = 10;
+	parameter HISTORY_SIZE = FILE_SIZE;
 
 	localparam MAX_ADDRESS_WIDTH = $clog2(FILE_SIZE);
 
@@ -162,8 +163,8 @@ module decompressor_top_tb;
 		
 		forever begin
 			@(negedge clock); 			// wait until the output byte is valid
-			if(input_done_flag)
-				break;
+			if(j >= FILE_SIZE)
+				return;
 			if(dut_out_valid) begin
 				test_output_byte_array[j] = dut_decompressed_byte;
 				last_address_captured = j;
@@ -263,7 +264,7 @@ module decompressor_top_tb;
 	endtask
 
 	// instantiation of decompressor
- 	decompressor_top #(.HISTORY_SIZE(256))
+ 	decompressor_top #(.HISTORY_SIZE(HISTORY_SIZE))
  		decompressor_dut(
  		.clock(clock),								// clock input
 		.reset(reset),								// reset input
