@@ -5,10 +5,10 @@ run_decompressor_testbench: create_test_vectors compile_decompressor_sv
 	vsim -c -GNUM_AUTO_TESTS=100 deompressor_top_tv
 
 compile_decompressor_sv:
-	vlog -sv decompressor/history_buffer.sv decompressor/decompressor_tob.sv decompressor/decompressor_top_tv.sv
+	vlog -sv decompressor/history_buffer.sv decompressor/decompressor_top.sv decompressor/decompressor_top_tb.sv
 
 create_test_vectors:
-	python test_vectors/GenerateVectors.py $(TESTVECTORSFLAGS)
+		python26 test_vectors/GenerateVectors.py $(TESTVECTORSFLAGS)
 
 clean:
 	rm test_vectors/*bin
