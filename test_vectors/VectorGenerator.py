@@ -147,8 +147,9 @@ class VectorGenerator:
         :param num_chars: the number of characters to return
         :return: a randomly generated alphanumeric string
         """
-
-        ret_string = ''.join(random.choice(string.ascii_lowercase) for _ in range(num_chars))
+        temp_string = ''
+        for i in range(num_chars):
+            ret_string = ret_string.join(random.choice(string.ascii_lowercase))
         return ret_string
 
 
