@@ -1,5 +1,4 @@
 import compressor_pkg::*;
-
 module top_hdl; //pragma attribute top_hdl parition_module_xrtl 
 parameter STRINGSIZE = 350;
 parameter TABLESIZE = 4096;
@@ -10,7 +9,7 @@ logic [15:0] [7:0] CurByte;
  logic [STRINGSIZE-1:0][7:0] compArray;
  logic [STRINGSIZE-1:0] controlWord;
 properties vals;
-comp_if comp_port(clock, reset);
+comp_if comp_port(clock);
 compressor_top #(STRINGSIZE,TABLESIZE) ctop (comp_port);
 
 integer k,m;
@@ -21,10 +20,11 @@ initial begin
 
 end
 
+/*
 // tbx clkgen
 initial begin
 		reset = 1; 
 		#10 reset = 0;
 end
-
+*/
 endmodule

@@ -1,12 +1,11 @@
 //Import alu_pkg definitions for struct data type and parameters
 import compressor_pkg::*;
-
-interface comp_if(input bit clock, reset); 
+interface comp_if(input bit clock); 
 // pragma attribute comp_if partition_interface_xif
 parameter STRINGSIZE = 350;
 parameter TABLESIZE = 4096;
 localparam delay = 5;
-bit valid;
+bit valid, reset;
 logic [15:0] [7:0] CurByte; 
  bit Done;
  logic [STRINGSIZE-1:0][7:0] compArray;
@@ -15,31 +14,26 @@ properties vals;
 
 integer k,m;
 
+// task to input string into compinput
 task stringinput(input properties vals, output properties out); // pragma tbx xtf
-
-m = 0;
 @(posedge clock);
+m = 0;
 valid = 1;
 for (int i = 0; m < STRINGSIZE ; i++) begin
-		k = 0;
-		for (int j = i*16; j < i*16+16; j++) begin
-			CurByte[k] <= (vals.testString[j]);
-			k++;
+	
+			CurByte = (vals.testString[m +:16]);			
 			
-		m++;
-		end		
 		@(posedge clock)
-		m = m;
-		
+		m = m + 16;
 	end
 	
 	valid = 0;	
 	
 	
 endtask
-
+// after Done signal high, save compArray and Control Word
 task whenDone(input properties vals, output properties out); // pragma tbx xtf
-
+	@(posedge clock);
 	while(!Done) @(posedge clock);
 	
 	out.cArray = compArray;
@@ -47,9 +41,21 @@ task whenDone(input properties vals, output properties out); // pragma tbx xtf
 	out.Done = Done;
 	$display("WhenDoneAfter.");
 endtask
-
+// used in debug
 task whenReset(); // pragma tbx xtf
 	@(negedge reset);
+endtask
+
+// reset the compressor to get ready for new inputs
+task callReset(); 		// pragma tbx xtf
+
+
+	@(posedge clock)
+	reset = 1;
+	@(posedge clock);
+	@(posedge clock)
+	reset = 0;
+	@(posedge clock);
 endtask
 
 endinterface: comp_if

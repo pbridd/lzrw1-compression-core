@@ -1,3 +1,5 @@
+
+
 module compressor_top (comp_if comp_port);
 /*clock, reset, valid, CurByte, Done, compArray, controlWord);
 parameter STRINGSIZE = 4096;

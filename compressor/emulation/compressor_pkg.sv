@@ -1,3 +1,4 @@
+
 package compressor_pkg;
 
 localparam STRINGSIZE = 350; 
