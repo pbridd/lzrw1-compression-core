@@ -1,5 +1,6 @@
 import argparse
 import VectorGenerator
+import os
 
 def main():
     parser = argparse.ArgumentParser(description = "process arguments")
@@ -10,23 +11,26 @@ def main():
     parser.add_argument("--manual_tv", "-mtv", default="manual_tvs.txt", type=argparse.FileType('r'),
                         help= "defines where to find manual test decompressed testbench strings, 1 line per tv")
 
+    parser.add_argument("--io_path", "-io", default = "", help="Defines where this program will search for and output test vectors")
+
     args = parser.parse_args()
 
     num_chars = args.num_chars
     num_vectors = args.num_vectors
     manual_vector_file = args.manual_tv
+    io_path = args.io_path
 
     i = 0
     while i < num_vectors:
         gen = VectorGenerator.VectorGenerator()
         print("Current testvector: " + str(i))
-        gen.generatevectors(num_chars, "generated_tv_" + str(i), 15)
+        gen.generatevectors(num_chars, os.path.join(io_path, "generated_tv_" + str(i)), 15)
         i += 1
 
     # generate manual tvs
     curr_file = 0
     for line in manual_vector_file:
-        generate_manual_testvector(line.replace('\n', '').replace('\r', ''), "manual_tv_" + str(curr_file), 15)
+        generate_manual_testvector(line.replace('\n', '').replace('\r', ''), os.path.join(io_path,"manual_tv_" + str(curr_file)), 15)
         curr_file += 1
 
 
