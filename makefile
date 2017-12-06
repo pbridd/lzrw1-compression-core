@@ -2,7 +2,7 @@ TESTVECTORSFLAGS =  --num_chars 256 --num_vectors 100 --manual_tv test_vectors/m
 
 run_decompressor_testbench: compile_decompressor_sv 
 	# put info here
-	vsim -c -GNUM_AUTO_TESTS=100 deompressor_top_tv
+	vsim -c -GNUM_AUTO_TESTS=100 decompressor_top_tb
 
 compile_decompressor_sv:
 	vlog -sv decompressor/history_buffer.sv decompressor/decompressor_top.sv decompressor/decompressor_top_tb.sv
