@@ -26,7 +26,8 @@ def main():
     # generate manual tvs
     curr_file = 0
     for line in manual_vector_file:
-        generate_manual_testvector(line, "manual_tv_" + str(curr_file), 15)
+        generate_manual_testvector(line.replace('\n', '').replace('\r', ''), "manual_tv_" + str(curr_file), 15)
+        curr_file += 1
 
 
 
