@@ -8,7 +8,7 @@ compile_decompressor_sv:
 	vlog -sv decompressor/history_buffer.sv decompressor/decompressor_top.sv decompressor/decompressor_top_tb.sv
 
 create_test_vectors:
-		python26 test_vectors/GenerateVectors.py $(TESTVECTORSFLAGS)
+		python test_vectors/GenerateVectors.py $(TESTVECTORSFLAGS)
 
 clean:
 	rm test_vectors/*bin
