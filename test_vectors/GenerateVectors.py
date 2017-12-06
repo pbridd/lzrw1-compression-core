@@ -7,7 +7,7 @@ def main():
     parser.add_argument("--num_chars", "-nc", default=256, help="defines the number of "
                                                                 "characters to use for this run of the"
                                                                 " vector generator")
-    parser.add_argument("--num_vectors", "-nv", default=10, help="defines the number of vectors to generate")
+    parser.add_argument("--num_vectors", "-nv", default=100, help="defines the number of vectors to generate")
     parser.add_argument("--manual_tv", "-mtv", default="manual_tvs.txt",
                         help= "defines where to find manual test decompressed testbench strings, 1 line per tv")
 
