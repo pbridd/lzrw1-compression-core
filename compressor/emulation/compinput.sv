@@ -1,3 +1,21 @@
+/*
+This is the compressor input for the compressor portion of the design. 
+input valid; when high save data in myHistory
+input CurByte; 16 bytes from uncompressed string
+input offset; old offset from tableofPtr's
+input Length; amount of total chars that are the same between CurBytes and the toCompare(bytes at offset)
+output toCompare;  bytes at offset to compare
+output NextBytes; Current 16 bytes to compare
+output toHash; 3 bytes to send to hash function
+output bytePtr; current char position
+output Done; end of string reached
+
+Portland State University
+ECE571 Final Project
+by Mark Chernishoff, Parker Ridd, Manas Karanjekar
+
+*/
+
 module compinput(
 input clock, reset, valid, 
 input [15:0] [7:0] CurByte, 

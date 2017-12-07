@@ -1,3 +1,19 @@
+/*
+This is the comparator input for the compressor portion of the design.
+This compares amount of bytes that are the same. 
+
+input ControlBit; used for debug
+input BytesAtOffset;  bytes at offset to compare
+input NextBytes; Current 16 bytes to compare
+output Length; amount of total chars that are the same between CurBytes and the toCompare(bytes at offset)
+
+
+Portland State University
+ECE571 Final Project
+by Mark Chernishoff, Parker Ridd, Manas Karanjekar
+
+*/
+
 module Comparator(
 input [15:0] [7:0] CurBytes,BytesAtOffset, // from input history
 input ControlBit, reset, 		// ControlBit from table
