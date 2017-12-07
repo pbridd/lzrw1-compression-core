@@ -15,7 +15,7 @@ logic [HISTORY-1:0] [7:0] myHistory = '0;
 logic [11:0] bytePointer = 0;
 integer count = 0;
 integer s_offset;
-integer i;
+integer j,k;
 
 byte valueHistory;
 
@@ -34,11 +34,13 @@ always_ff @(posedge clock) begin
 		
 		// increment byte pointer if not at end of string
 		// add current byte to history
+		
 		if(valid && (bytePointer < HISTORY)) begin
 			Done <= 0;
 			myHistory[count+1 +: 17] <= CurByte ;
 			count <= count + 16;
 		end
+		
 		else count <= count;
 		// if first 3 bytes recieved, send to hash function
 		if(Length >= 3) bytePointer <= bytePointer + Length;
@@ -62,10 +64,12 @@ always_comb begin
 			NextBytes = myHistory[bytePointer +: 16];
 		end
 		else if ((myHistory[bytePointer] != 0)  && (bytePointer - s_offset) <= 15 && s_offset > 0 ) begin
-			//i = 0;
-			//for(i = 0; i < bytePointer - offset; i++) begin
-				//toCompare[i] = myHistory[offset+i];
-				toCompare[0] = myHistory[offset];
+			j = 0;
+			for(int i = 0; i < bytePointer - offset; i++) begin
+				if(j < 16) begin
+				toCompare[j] = myHistory[offset+j];
+				j++;
+				/*toCompare[0] = myHistory[offset];
 				toCompare[1] = myHistory[offset+1];
 				toCompare[2] = myHistory[offset+2];
 				toCompare[3] = myHistory[offset+3];
@@ -80,12 +84,23 @@ always_comb begin
 				toCompare[12] = myHistory[offset+12];
 				toCompare[13] = myHistory[offset+13];
 				toCompare[14] = myHistory[offset+14];
-				toCompare[15] = myHistory[offset+15];
-			//end
-			NextBytes = myHistory[bytePointer +: 16];
+				toCompare[15] = myHistory[offset+15];*/
+				end
+			//NextBytes = myHistory[bytePointer +: 16];	
+			end		
+			
 		end
 		else toCompare = '0;
-		NextBytes = myHistory[bytePointer +: 16];
+		k = 0;
+		if (bytePointer+16 <= HISTORY) NextBytes = myHistory[bytePointer +: 16];
+		else if(HISTORY-bytePointer <= 0) NextBytes = '0;
+		else begin		
+			NextBytes = '0;
+			for(int i = 0; i <= HISTORY -bytePointer; i++) begin
+				NextBytes[k] = myHistory[bytePointer + k];
+				k++;
+			end
+		end
 end
 assign bytePtr = bytePointer;
 assign valueHistory = myHistory[bytePointer];

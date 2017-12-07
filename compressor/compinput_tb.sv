@@ -1,11 +1,3 @@
-class Unique;
- rand bit [4095:0][11:0] val;
- 
- constraint uniq {unique{val};}
- 
- endclass
-
-
 module compinput_tb ();
 parameter STRINGSIZE = 350;
 parameter TABLESIZE = 4096;
@@ -17,23 +9,18 @@ bit Done;
 logic[RANDTABLE:0][11:0] uniqnums;
 logic [STRINGSIZE - 1:0] controlWord;
 logic [STRINGSIZE-1:0][7:0] compArray;
+logic [STRINGSIZE -1:0][7:0] testString;
+
 integer nums;
 int newPtr;
 logic [7:0] newByte;
-// compressor_top #(STRINGSIZE,TABLESIZE,RANDTABLE) ctop (clock,reset,valid,CurByte,Done,compArray,controlWord,uniqnums);
 compressor_top #(STRINGSIZE,TABLESIZE) ctop (clock,reset,valid,CurByte,Done,compArray,controlWord);
 int assertions_cnt;
 
 string s;
 int k;
 int m;
-Unique u = new();
 initial begin
-	repeat (RANDTABLE+1) begin
-		assert(u.randomize());
-	end
-uniqnums[RANDTABLE:0] = u.val[RANDTABLE:0];
-
 	clock = 0;
 		reset = 1; 
 		#(2*delay) reset = 0;
@@ -53,28 +40,31 @@ m = 0;
 wait (!reset && clock);
 //#(2*delay);
 
-	//s = "daddy finger daddy finger where are you, here I am, here I am where are you.\n new line\0";
-	 s = "When Munch died in January 1944, it transpired that he had unconditionally bequeathed all his remaining works to the City of Oslo. Edvard Munch's art is the most significant Norwegian contribution to the history of art, and he is the only Norwegian artist who has exercised a decisive influence on European art trends, above all as a pioneer of\0";
-	valid <= 1;
-	for (int i = 0; m < s.len() ; i++) begin
-		k = 0;
-		for (int j = i*16; j < i*16+16; j++) begin
-			CurByte[k] <= (s.getc(j));
-			k++;
+	s = "daddy finger daddy finger where are you, here I am, here I am where are you.\n new line\0";
+	// s = "When Munch died in January 1944, it transpired that he had unconditionally bequeathed all his remaining works to the City of Oslo. Edvard Munch's art is the most significant Norwegian contribution to the history of art, and he is the only Norwegian artist who has exercised a decisive influence on European art trends, above all as a pioneer of";
+
+	 k = 0;
+for(int i = 0; i < STRINGSIZE; i++) begin
+	testString[k] = s.getc(k);
+	k++;
+end 
+valid = 1;
+for (int i = 0; m < STRINGSIZE ; i++) begin
+	
+			CurByte = (testString[m +:16]);			
 			
-		m++;
-		end
-		
-		#(2*delay);
+		@(posedge clock)
+		m = m + 16;
 	end
-	valid <= 0;
 	
-	
+	valid = 0;		
+
 	wait (Done)
 	$display("Input string= %s", s);
 	$display("Compressed string= %s",{<< byte {compArray}});
 	$display("amount of assertions checked = %d", assertions_cnt);
-	
+	reset = 1; 
+		#(4*delay) reset = 0;
 end
 
 
