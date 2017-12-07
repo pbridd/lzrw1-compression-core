@@ -1,16 +1,13 @@
-module compressor_top (clock, reset, valid, CurByte, Done, compArray, controlWord,uniqnums,controlPtr);
+module compressor_top (clock, reset, valid, CurByte, Done, compArray, controlWord,controlPtr);
 parameter STRINGSIZE = 4096;
 parameter TABLESIZE = 4096;
-
-parameter RANDTABLE = 16523;
 input clock, reset, valid;
 input [15:0] [7:0] CurByte;
 output Done;
 output logic [STRINGSIZE-1:0][7:0] compArray;
 output logic [STRINGSIZE-1:0] controlWord;
-input logic [RANDTABLE:0][11:0] uniqnums;
-output integer controlPtr;	// Is this legal?
-// integer controlPtr;	// Is this legal?
+output integer controlPtr;
+//input logic [RANDTABLE:0][11:0] uniqnums;
 
 
 logic [11:0] offset; 
@@ -18,7 +15,7 @@ logic [15:0] [7:0] toCompare;
 logic [15:0] [7:0] NextBytes;
 logic [23:0] toHash;
 integer bytePtr;
-
+integer compressPtr;
 logic ControlBit;
 logic [3:0] Length;
 logic [15:0] [7:0] CurBytes,BytesAtOffset;
@@ -29,8 +26,8 @@ integer BytePosition;
 byte OutByte;
 
 logic [3:0] length;
-byte OneByte;
-
+byte OneByte,prevOneByte;
+logic [15:0] prevCV;
 compinput #(STRINGSIZE) comp (clock, reset, valid, CurByte, offset, Length, toCompare, NextBytes, toHash, Done, bytePtr);
 
 /*
@@ -60,9 +57,9 @@ intf compArray,
 output logic [STRINGSIZE-1:0] controlWord);	*/
 //intf #(STRINGSIZE) InterfaceArray ();
 
-CompressedValues #(STRINGSIZE) CV (clock,reset, Done,length,Offset,OneByte,ControlBit,compArray,controlWord,controlPtr);
+CompressedValues #(STRINGSIZE) CV (clock,reset, Done,length,Offset,OneByte,ControlBit,compArray,controlWord,controlPtr,compressPtr);
 
-hashFunction #(RANDTABLE) hF (reset,uniqnums,toHash,fromHash);
+hashFunction hF (reset,toHash,fromHash);
 
 assign BytePosition = bytePtr;		// from compinput to table
 assign OneByte = OutByte; // from table to CompressedValues

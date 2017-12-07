@@ -126,7 +126,6 @@ module combined_top(
 			.compArray(compArray),
 			.controlWord(c_controlWord),
 			.Done(c_Done),	// MK-> Avoiding multiply driven signals
-			.uniqnums(),
 			.controlPtr(c_controlPtr)
 		);
 	decompressor_top #( 

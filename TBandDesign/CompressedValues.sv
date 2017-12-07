@@ -1,19 +1,4 @@
-/*
-interface intf #(parameter  STRINGSIZE);
-
-//https://verificationacademy.com/forums/systemverilog/parameterized-struct-systemverilog-design
-  
- 
-typedef union packed {
-	logic [STRINGSIZE-1:0] [15:0] copy;
-	logic [(STRINGSIZE*2)-1:0] [7:0] literal;
-} compressed_t;
-
-compressed_t c_t;
-endinterface
-*/
-
-module CompressedValues (clock, reset, Done, length, Offset, OneByte, controlBit, compArray, controlWord,controlPtr);
+module CompressedValues (clock, reset, Done, length, Offset, OneByte, controlBit, compArray, controlWord,controlPtr,compressPtr);
 parameter  STRINGSIZE = 4096;
 
 input clock, reset, Done;
@@ -24,9 +9,9 @@ input controlBit;		// from table
 /*intf compArray,*/
 output logic [STRINGSIZE-1:0] [7:0] compArray;
 output logic [STRINGSIZE-1:0] controlWord;	
-output integer unsigned controlPtr;
-//integer unsigned controlPtr;
-integer unsigned compressPtr;
+
+output integer controlPtr;
+output integer compressPtr;
 
 
 always_ff @(posedge clock) begin
