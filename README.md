@@ -4,7 +4,7 @@ This is the repository for a verilog version of the lzrw1 compression core. The 
 The project is loosely based on the VHDL compressor found at http://opencores.org/project,lzrw1-compressor-core. However, it was designed from scratch.
 
 
-##Authors
+## Authors
 
 The authors of this core are Manas Karanjekar (ManasK7), Mark Chernishoff (markcherni), and Parker Ridd (pbridd). The core was made for ECEn 571, Introduction to SystemVerilog, at Portland State University.
 
@@ -13,7 +13,7 @@ Contact for decompressor: Parker Ridd
 Contact for combined testbench: Manas Karanjekar
 
 
-##Progress
+## Progress
 
 ###Compressor
 
@@ -69,9 +69,9 @@ cycle to allow the byte to be passed through. After that one clock cycle, it wil
 
 Under construction
 
-##Running the design
+## Running the design
 
-###Prerequisites:
+### Prerequisites:
 
 	1. You must be on a machine that has QuestaSim installed and has access to the commmandline
 
@@ -79,7 +79,7 @@ Under construction
 
 	3. To run the python testbench make stage (optional because randomly generated vectors have been provided), you must have python 3 installed on your computer
 
-###Running the standalone compressor testbench
+### Running the standalone compressor testbench
 
 To run the compressor testbench, use the folliwing steps:
 
@@ -89,7 +89,7 @@ To run the compressor testbench, use the folliwing steps:
 
 	3. If the test was successful, you should see output that contains the number of assertions checked, the input string, and the compressed output.
 
-###Emulating the compressor
+### Emulating the compressor
 
 	1. Log onto the veloce machine
 
@@ -97,7 +97,7 @@ To run the compressor testbench, use the folliwing steps:
 
 	3. run `make -f Makefile_comp`
 
-###Running the standalone decompressor testbench
+### Running the standalone decompressor testbench
 
 To run the decompressor testbench, use the following steps
 
@@ -112,7 +112,7 @@ To run the decompressor testbench, use the following steps
 
 		```# Total tests failed was 0 out of 10 manual tests + 100 automatically generated tests```
 
-###Running the integrated testbench
+### Running the integrated testbench
 
 	1. Run `make run_top_testbench`
 
