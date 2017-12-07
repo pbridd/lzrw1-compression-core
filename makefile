@@ -1,4 +1,4 @@
-TESTVECTORSFLAGS =  --num_chars 256 --num_vectors 100 --manual_tv test_vectors/manual_tvs.txt --io_path test_vectors/
+TESTVECTORSFLAGS =  --num_chars 256 --num_vectors 100 --manual_tv manual_tvs.txt --io_path test_vectors/
 
 run_top_testbench: compile_testbench_sv
 	vsim -c top
@@ -20,7 +20,7 @@ compile_decompressor_sv: make_vlib
 	vlog -sv decompressor/history_buffer.sv decompressor/decompressor_top.sv decompressor/decompressor_top_tb.sv
 
 create_test_vectors:
-	python test_vectors/GenerateVectors.py $(TESTVECTORSFLAGS)
+	python3 test_vectors/GenerateVectors.py $(TESTVECTORSFLAGS)
 
 make_vlib:
 	vlib work

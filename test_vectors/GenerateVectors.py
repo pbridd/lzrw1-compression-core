@@ -15,8 +15,8 @@ def main():
 
     args = parser.parse_args()
 
-    num_chars = args.num_chars
-    num_vectors = args.num_vectors
+    num_chars = int(args.num_chars)
+    num_vectors = int(args.num_vectors)
     manual_vector_filename = args.manual_tv
     io_path = args.io_path
 
