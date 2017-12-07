@@ -15,36 +15,36 @@ Contact for combined testbench: Manas Karanjekar
 
 ## Progress
 
-###Compressor
+### Compressor
 
-####Validation
+#### Validation
 
 The compressor has been successfully validated using its standalone testbench. The testbench consists of feeding in an input string and outputting compressed data. Many assertions are checked in the testbench and the number is printed out when the string has finished being compressed.
 
-####Emulation
+#### Emulation
 The compressor has been successfully emulated on the Veloce platform using the TBX mode of emulation.
 
-###Decompressor
+### Decompressor
 
-####Validation
+#### Validation
 
 The decompressor has been successfully validated using manual test vectors that examine corner cases (including 256 repeating characters) as well as real text from websites and books. In addition, the testbench drives random generated strings into the decompressor and checks it against the original data. Errors are recorded and reported. A python3 program is included that can generate new random testvectors as well as manual testvectors given in test_vectors/manual_tvs.txt and line delimited.
 
-####Emulation
+#### Emulation
 
 At this time, the framework has been laid down for decompressor emulation in tbx mode but emulation has not yet been attempted.
 
-###Top testbench
+### Top testbench
 
 A testbench has been created that instantiates both the compressor and decompressor. This testbench successfully generates random values and drives them into the compressor, but its integration with the decompressor is not completely debugged. The testbench at least partially exercises the compressor and decompressor, which can be seen by the assertions that are displayed while simulating.
 
-##Design
+## Design
 
-###Overview
+### Overview
 
 This design includes a compressor core (under the compressor folder), a decompressor core (under the decompressor folder), and a high-level testbench.
 
-####Compressor
+#### Compressor
 
 Under construction
 
