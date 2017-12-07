@@ -1,18 +1,32 @@
-//
-//
+//	LZRW1 Compression Core
+//	Decompressor
 // 
+//	This module decompresses data that has been compressed using a LZRW1 algorithm. It accepts one piece of
+// 	compressed data every time data_in_valid is driven high, and outputs one byte of data every clock cycle
+//	out_valid is 1'b1. 
+//	
+//  When the control word is high, data_in_valid is high, and the compressor isn't busy, the decompressor
+//	will go into the DECOMPRESS state. In this state, the decompressor will use the high four bits of the
+//  data_in input to find the length of the compressed data (up to 15 bytes) and the low twelve bits to 
+//  get the offset. It has an offset range of 4095 bytes. It outputs a distinct byte of data on deompressed_byte
+//  for every cycle out_valid is 1'b1, and then goes back to the IDLE state after it is done, at which point
+//  it can accept new data.
 //
+//	If the conditions above are met with the exception of control_word_in being 1'b0, the decompressor will simply
+//  pass the byte through while writing the applicable space in its history memory. out_valid will go high for one
+//  cycle to allow the byte to be passed through. After that one clock cycle, it will go back to the IDLE state.
 //
-//
+//	Manas Karanjekar, Mark Chernishoff, and Parker Ridd
+//	ECEn 571 Fall 2017
 
 module decompressor_top(
 		clock,				// clock input
 		reset,				// reset input
-		data_in,			// The 2 byte data-in field
+		data_in,			// The 2 byte data-in field. The high bits [15:8] will be ignored if the control word is 0
 		control_word_in,	// The control word that corresponds to data-in
 		data_in_valid,		// when this is 1'b1, the decompressor will use the inputs
 		decompressed_byte,  // the decompressed output
-		out_valid,			// whether the output is valid. Don't use data if 0.
+		out_valid,			// whether the output is valid. Don't use data if 0. Every cycle this is valid signifies a new byte out.
 		decompressor_busy	// whether the decompressor is busy. When this is 1'b1, the decompressor will ignore all data inputs.
 	);
 
@@ -39,7 +53,6 @@ module decompressor_top(
 	output logic decompressor_busy;
 
 	
-
 	typedef enum {
 		IDLE,
 		PASS_THROUGH,

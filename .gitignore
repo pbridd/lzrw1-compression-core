@@ -1,2 +1,7 @@
 *.project
 *.svproject
+test_vectors/.idea/misc.xml
+test_vectors/.idea/modules.xml
+test_vectors/.idea/test_vectors.iml
+test_vectors/__pycache__/VectorGenerator.cpython-36.pyc
+test_vectors/.idea/workspace.xml

@@ -1,16 +1,25 @@
+//	LZRW1 Compression Core
+//	History Buffer
+// 
+//	This module stores history for the LZRW1 decompressor module. It stores one byte of data per 
+//	table entry. wr_en triggers a write, and one write can be performed per clock cycle.
+//
+//	Manas Karanjekar, Mark Chernishoff, and Parker Ridd
+//	ECEn 571 Fall 2017
+
 module history_buffer(
-		clock,
-		reset, 
-		data_in,
-		wr_addr,
-		wr_en,
-		rd_addr,
-		data_out
+		clock,			// clock in
+		reset, 			// reset in
+		data_in,		// data in
+		wr_addr,		// write address in
+		wr_en,			// write enable
+		rd_addr,		// read address in
+		data_out		// data out
 	);
 
-	parameter HISTORY_SIZE = 4096;
-	parameter ENTRY_WIDTH = 8;
-	localparam HISTORY_ADDR_WIDTH = $clog2(HISTORY_SIZE);
+	parameter HISTORY_SIZE = 4096;				// the number of entries in the history buffer
+	parameter ENTRY_WIDTH = 8;					// entry width for the history buffer
+	localparam HISTORY_ADDR_WIDTH = $clog2(HISTORY_SIZE);	// the address width is derived from the history size
 
 
 	input logic clock, reset;
@@ -19,7 +28,7 @@ module history_buffer(
 	input logic wr_en;
 	output logic[ENTRY_WIDTH-1:0] data_out;
 
-	// history buffer
+	// history buffer array
 	logic[ENTRY_WIDTH-1:0] history[HISTORY_SIZE-1:0], history_next[HISTORY_SIZE-1:0];
 
 	always_ff @(posedge clock, posedge reset) begin
