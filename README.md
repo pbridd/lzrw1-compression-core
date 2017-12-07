@@ -9,7 +9,9 @@ The project is loosely based on the VHDL compressor found at http://opencores.or
 The authors of this core are Manas Karanjekar (ManasK7), Mark Chernishoff (markcherni), and Parker Ridd (pbridd). The core was made for ECEn 571, Introduction to SystemVerilog, at Portland State University.
 
 Contact for compressor: Mark Chernishoff
+
 Contact for decompressor: Parker Ridd
+
 Contact for combined testbench: Manas Karanjekar
 
 
@@ -73,50 +75,49 @@ Under construction
 
 ### Prerequisites:
 
-	1. You must be on a machine that has QuestaSim installed and has access to the commmandline
+1. You must be on a machine that has QuestaSim installed and has access to the commmandline
 
-	2. You must be on a linux machine
+2. You must be on a linux machine
 
-	3. To run the python testbench make stage (optional because randomly generated vectors have been provided), you must have python 3 installed on your computer
+3. To run the python testbench make stage (optional because randomly generated vectors have been provided), you must have python 3 installed on your computer
 
 ### Running the standalone compressor testbench
 
 To run the compressor testbench, use the folliwing steps:
 
-	1. Run `make run_compressor_testbench`
+1. Run `make run_compressor_testbench`
 
-	2. Once questasim is launched via commandline, enter `run -all`.
+2. Once questasim is launched via commandline, enter `run -all`.
 
-	3. If the test was successful, you should see output that contains the number of assertions checked, the input string, and the compressed output.
+3. If the test was successful, you should see output that contains the number of assertions checked, the input string, and the compressed output.
 
 ### Emulating the compressor
 
-	1. Log onto the veloce machine
+1. Log onto the veloce machine
 
-	2. cd into compressor/emulation
+2. cd into compressor/emulation
 
-	3. run `make -f Makefile_comp`
+3. run `make -f Makefile_comp`
 
 ### Running the standalone decompressor testbench
 
 To run the decompressor testbench, use the following steps
 
-	1. (optional & requires python 3 to be installed)
-	 : Run `make create_test_vectors` while cd'd into the root of this repository.
+1. (optional & requires python 3 to be installed)
+ : Run `make create_test_vectors` while cd'd into the root of this repository.
 
-	2. Run `make run_decompressor_testbench`
+2. Run `make run_decompressor_testbench`
 
-	3. Once questasim is launched via commandline, enter `run -all` 
+3. Once questasim is launched via commandline, enter `run -all` 
 
-	4. If the test was successful, you should see this output:
+4. If the test was successful, you should see this output:
 
-		```# Total tests failed was 0 out of 10 manual tests + 100 automatically generated tests```
+	```# Total tests failed was 0 out of 10 manual tests + 100 automatically generated tests```
 
 ### Running the integrated testbench
 
-	1. Run `make run_top_testbench`
+1. Run `make run_top_testbench`
 
-	2. Once questasim is launched via commandline, enter `run -all`
+2. Once questasim is launched via commandline, enter `run -all`
 
-	3. The test will show inputs being driven into the compressor. However, since it is not yet fully 
-functional, no outputs will be checked and assertions will fire in the decompressor.
+3. The test will show inputs being driven into the compressor. However, since it is not yet fully functional, no outputs will be checked and assertions will fire in the decompressor.
