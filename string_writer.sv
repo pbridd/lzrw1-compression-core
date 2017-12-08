@@ -40,7 +40,7 @@ string blank_str = " ";
 string str;
 integer file_handle;
 /* Constraint number of characters to be between 500 and 4500 */ 
-constraint no_of_char {no_of_characters>500;no_of_characters <4500;}
+constraint no_of_char {no_of_characters>50;no_of_characters <450;}
 //no_of_characters = $random;
 /* Constraining every letter to be ASCII */
 constraint ascii_char {foreach(temp_arr[i]) temp_arr[i] inside{[65:90],[97:122]};};
@@ -92,7 +92,7 @@ string str;
 int words_for_text[],j,k;	// Dynamic array to store a set of words that will be repeated
 int strings_for_text[][];
 /* Constraint number of characters to be between 500 and 4500 */ 
-constraint no_of_char {no_of_characters>500;no_of_characters <4500;}
+constraint no_of_char {no_of_characters>50;no_of_characters <450;}
 //no_of_characters = $random;
 /* Constraining every letter to be ASCII */
 constraint ascii_char {foreach(temp_arr[i]) temp_arr[i] inside{[65:90],[97:122]};};
@@ -147,7 +147,7 @@ string str;
 int words_for_text[],j,k;	// Dynamic array to store a set of words that will be repeated
 int strings_for_text[][];
 /* Constraint number of characters to be between 500 and 4500 */ 
-constraint no_of_char {no_of_characters>500;no_of_characters <4500;}
+constraint no_of_char {no_of_characters>50;no_of_characters <450;}
 //no_of_characters = $random;
 /* Constraining every letter to be ASCII */
 constraint ascii_char {temp_arr inside{[65:90],[97:122]};};

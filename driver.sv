@@ -5,14 +5,23 @@ class driver;
 file_reader fr;
 text_writer tw;
 int no_of_words;
+
+/* Declaring interface */
+virtual input_interface.IP input_intf;
+
+function new(virtual input_interface.IP input_intf_new);
+this.input_intf = input_intf_new;
+endfunction
+
+
 task start();
 $display("-D\t Inside start method of the driver");
 /* We first generate a test file */
 tw = new;	// Create object and allocate memory
-fr = new;	// Create object and allocate memory
+fr = new(input_intf);	// Create object and allocate memory
 
 	randcase
-	0 : 	begin
+	10 : 	begin
 		completely_random cr;
 		cr = new();
 		tw = cr;
@@ -28,7 +37,7 @@ fr = new;	// Create object and allocate memory
 		tw.close_file();
 		end
 
-	0 : 	begin
+	10 : 	begin
 		moderately_random mr;
 		mr = new();
 		tw = mr;
