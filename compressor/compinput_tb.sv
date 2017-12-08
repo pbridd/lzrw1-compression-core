@@ -1,3 +1,14 @@
+/*
+This is the testbench for the compressor portion of the design. 
+input s; a string of characters
+output compArray; an array of compressed characters
+output countrolWord; an array of 0's and 1's 
+
+Portland State University
+ECE571 Final Project
+by Mark Chernishoff, Parker Ridd, Manas Karanjekar
+
+*/
 module compinput_tb ();
 parameter STRINGSIZE = 350;
 parameter TABLESIZE = 4096;

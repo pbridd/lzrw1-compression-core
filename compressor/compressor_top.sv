@@ -1,3 +1,12 @@
+/*
+This is the is the module that all the pin-level connections
+ 
+Portland State University
+ECE571 Final Project
+by Mark Chernishoff, Parker Ridd, Manas Karanjekar
+
+*/
+
 module compressor_top (clock, reset, valid, CurByte, Done, compArray, controlWord);
 parameter STRINGSIZE = 4096;
 parameter TABLESIZE = 4096;

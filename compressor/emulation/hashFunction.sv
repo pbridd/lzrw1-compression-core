@@ -1,3 +1,15 @@
+/*
+This calculates the hashFunction to index the table of pointers.
+ 
+input toHash; 3 bytes from the compinput
+output fromHash; 12 bits to index the table
+
+Portland State University
+ECE571 Final Project
+by Mark Chernishoff, Parker Ridd, Manas Karanjekar
+
+*/
+
 module hashFunction (
 input reset,
 //input [RANDTABLE:0][11:0] uniqnums, /* table of all unique numbers from testbench*/

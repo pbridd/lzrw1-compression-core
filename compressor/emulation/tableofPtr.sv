@@ -1,3 +1,22 @@
+/*
+This module adds a byte position entry into the table and sends old
+byte position back to compinput.
+
+input InByte; byte to send on to CompressedValues if controlBit high
+input fromHash; 12 bits to index the TableOfPointers
+input BytePosition; the current byte position to input into the tableOfPtr
+input length; amount of bits that are the same if >2 then set controlBit hi, else low
+output OutByte; send on to CompressedValues, 0 or literal depends on ControlBit
+output OldBytePosition; if table entry !null send to value to compinput
+output Offset; send to CompressedValues
+output ControlBit; send to CompressedValues
+
+Portland State University
+ECE571 Final Project
+by Mark Chernishoff, Parker Ridd, Manas Karanjekar
+
+*/
+
 module tableOfPtr(
 
 input clock, reset,

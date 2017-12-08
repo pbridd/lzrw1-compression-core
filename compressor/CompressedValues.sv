@@ -1,3 +1,23 @@
+/*
+This is the is the module that handles adding literal (OneByte) or {length,offset}
+to the compArray.
+ 
+input OneByte; byte to add to compArray
+input Offset; offset from tableofPtr's
+input Length; amount of total chars that are the same between CurBytes and the toCompare(bytes at offset)
+input ControlBit; added to controlWord array
+output compArray; an array of compressed characters
+output countrolWord; an array of 0's and 1's 
+output controlPtr; used for assertions
+output compressPtr; used for assertions
+input Done; end of string reached
+
+Portland State University
+ECE571 Final Project
+by Mark Chernishoff, Parker Ridd, Manas Karanjekar
+
+*/
+
 module CompressedValues (clock, reset, Done, length, Offset, OneByte, controlBit, compArray, controlWord,controlPtr,compressPtr);
 parameter  STRINGSIZE = 4096;
 
