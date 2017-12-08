@@ -1,5 +1,5 @@
 # lzrw1-compression-core
-This is the repository for a verilog version of the lzrw1 compression core. The goal of this project was to make both a compressor and decompressor core that uses the LZRW1 compression algorithm. The long-term goal is to integrate both the cores into a single module and test them in a feedthrough fashion.
+This is the repository for a verilog version of the lzrw1 compression core. The goal of this project was to make both a compressor and decompressor core that uses the LZRW1 compression algorithm. We also managed to integrate both the cores into a single module(combined_top.sv) and test them in a feedthrough fashion with the top-level testbench.
 
 The project is loosely based on the VHDL compressor found at http://opencores.org/project,lzrw1-compressor-core. However, it was designed from scratch.
 
@@ -99,11 +99,13 @@ A testbench has been created that instantiates both the compressor and decompres
 
 To run the compressor testbench, use the folliwing steps:
 
-1. Run `make run_compressor_testbench`
+1. cd into the root of this repository
 
-2. Once questasim is launched via commandline, enter `run -all`.
+2. Run `make run_compressor_testbench`
 
-3. If the test was successful, you should see output that contains the number of assertions checked, the input string, and the compressed output.
+3. Once questasim is launched via commandline, enter `run -all`.
+
+4. If the test was successful, you should see output that contains the number of assertions checked, the input string, and the compressed output.
 
 ### Emulating the compressor
 
@@ -130,8 +132,10 @@ To run the decompressor testbench, use the following steps
 
 ### Running the integrated testbench
 
-1. Run `make run_top_testbench`
+1. cd into the root of this repository 
 
-2. Once questasim is launched via commandline, enter `run -all`
+2. Run `make run_top_testbench`
 
-3. The test will show inputs being driven into the compressor, and then will show the input/output strings that were compared. Finally, it will indicate whether the strings match. If they do, the test passed.
+3. Once questasim is launched via commandline, enter `run -all`
+
+4. The test will show inputs being driven into the compressor, and then will show the input/output strings that were compared. Finally, it will indicate whether the strings match. If they do, the test passed.
