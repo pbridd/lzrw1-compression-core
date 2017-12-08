@@ -7,7 +7,7 @@ by Mark Chernishoff, Parker Ridd, Manas Karanjekar
 
 */
 
-module compressor_top (clock, reset, valid, CurByte, Done, compArray, controlWord);
+module compressor_top (clock, reset, valid, CurByte, Done, compArray, controlWord, controlPtr);
 parameter STRINGSIZE = 4096;
 parameter TABLESIZE = 4096;
 input clock, reset, valid;
@@ -15,6 +15,7 @@ input [15:0] [7:0] CurByte;
 output Done;
 output logic [STRINGSIZE-1:0][7:0] compArray;
 output logic [STRINGSIZE-1:0] controlWord;
+output integer controlPtr;
 //input logic [RANDTABLE:0][11:0] uniqnums;
 
 
@@ -23,7 +24,7 @@ logic [15:0] [7:0] toCompare;
 logic [15:0] [7:0] NextBytes;
 logic [23:0] toHash;
 integer bytePtr;
-integer controlPtr,compressPtr;
+integer compressPtr;
 logic ControlBit;
 logic [3:0] Length;
 logic [15:0] [7:0] CurBytes,BytesAtOffset;

@@ -82,9 +82,9 @@ If the conditions above are met with the exception of control_word_in being 1'b0
 pass the byte through while writing the applicable space in its history memory. out_valid will go high for one
 cycle to allow the byte to be passed through. After that one clock cycle, it will go back to the IDLE state.
 
-#### High level testbench
+#### Top level testbench
 
-Under construction
+The top-level testbench is an object-oriented testbench that generates a 'test_input.txt' file, which contains randomly generated strings, with the degree of randomization and repetition of alphabets being decided by a randcase statement.  The driver module takes this txt file and drives 16-bytes at a time(i.e. at posedge of clock) into the DUT. After the DUT is reset and initialized, we drive these 16-byte chunks, and ideally, we should see the output stream of bytes to match the input string. SystemVerilog concepts such as interfaces, polymorphism, constrained randomization with weighted distributions, string operations and general Object Oriented Programming were learnt and deployed in this top-level testbench.
 
 ## Running the design
 
