@@ -38,7 +38,7 @@ The basic framework has been laid down for decompressor to run in tbx mode and t
 
 ### Top testbench
 
-A testbench has been created that instantiates both the compressor and decompressor. This testbench successfully generates random values and drives them into the compressor, but its integration with the decompressor is not completely debugged. The testbench at least partially exercises the compressor and decompressor, which can be seen by the assertions that are displayed while simulating.
+A testbench has been created that instantiates both the compressor and decompressor. This testbench successfully generates random values and drives them into the compressor, and then the top-level dut drives values into the decompressor. The decompressed characters are then collected by the testbench and compared to the original stimulus, and the testbench indicates whether they match.
 
 ## Design
 
@@ -120,4 +120,4 @@ To run the decompressor testbench, use the following steps
 
 2. Once questasim is launched via commandline, enter `run -all`
 
-3. The test will show inputs being driven into the compressor. However, since it is not yet fully functional, no outputs will be checked and assertions will fire in the decompressor.
+3. The test will show inputs being driven into the compressor, and then will show the input/output strings that were compared. Finally, it will indicate whether the strings match. If they do, the test passed.
