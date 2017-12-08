@@ -7,7 +7,7 @@ by Mark Chernishoff, Parker Ridd, Manas Karanjekar
 
 */
 
-module compressor_top (clock, reset, valid, CurByte, Done, compArray, controlWord);
+module compressor_top (clock, reset, valid, CurByte, Done, compArray, controlWord, controlPtr);
 parameter STRINGSIZE = 4096;
 parameter TABLESIZE = 4096;
 input clock, reset, valid;
