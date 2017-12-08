@@ -48,7 +48,22 @@ This design includes a compressor core (under the compressor folder), a decompre
 
 #### Compressor
 
-Under construction
+This design takes a string and compresses it using the LZRW1 algorithm. When the valid signal goes high,
+data in 16 byte chunks is expected to be at the input of CurBytes. The outputs afte compression completes
+is an array of compressed values name compArray and an array of control bits named ControlWord.
+
+While inputs are received, the compressor starts going to work on the CurBytes being fed into the input. 
+The first 3 bytes starting at the char byte pointer are fed into the hash function to convert to a 12 bit 
+address that access a table of pointers. If the entry is null, the current byte pointer is placed inside the
+entry. If it is not null the old entry is the old byte position that had the same address and more likely that
+it has the same 3 bytes as the current 3 bytes. If that is the case, a comparison up to 16 bytes is made starting
+at the old byte position to 16 bytes past the new byte position. A length is returned from this comparison and an 
+offset is calculated from old byte position to current byte position. 
+
+If the table entry is null a control bit is set low and the output compArray gets the current byte at the current
+byte position. If the entry is not null and the bytes match between 3 to 16 bytes, then the length is concatenated 
+with the offset to form a 16 bit word. This 16 word is placed in the compArray. When the byte pointer reaches the end 
+of the string a Done signal goes high, saying its complete. A reset is then needed to input new strings.
 
 #### Decompressor
 
