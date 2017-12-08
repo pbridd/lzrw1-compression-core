@@ -14,32 +14,6 @@ Contact for decompressor: Parker Ridd
 
 Contact for combined testbench: Manas Karanjekar
 
-
-## Progress
-
-### Compressor
-
-#### Validation
-
-The compressor has been successfully validated using its standalone testbench. The testbench consists of feeding in an input string and outputting compressed data. Many assertions are checked in the testbench and the number is printed out when the string has finished being compressed.
-
-#### Emulation
-The compressor has been successfully emulated on the Veloce platform using the TBX mode of emulation.
-
-### Decompressor
-
-#### Validation
-
-The decompressor has been successfully validated using manual test vectors that examine corner cases (including 256 repeating characters) as well as real text from websites and books. In addition, the testbench drives random generated strings into the decompressor and checks it against the original data. Errors are recorded and reported. A python3 program is included that can generate new random testvectors as well as manual testvectors given in test_vectors/manual_tvs.txt and line delimited.
-
-#### Emulation
-
-The basic framework has been laid down for decompressor to run in tbx mode and the decompressor modules were synthesized, but no attempt was made to run the testbench in this mode due to time constraints. 
-
-### Top testbench
-
-A testbench has been created that instantiates both the compressor and decompressor. This testbench successfully generates random values and drives them into the compressor, and then the top-level dut drives values into the decompressor. The decompressed characters are then collected by the testbench and compared to the original stimulus, and the testbench indicates whether they match.
-
 ## Design
 
 ### Overview
@@ -85,6 +59,31 @@ cycle to allow the byte to be passed through. After that one clock cycle, it wil
 #### Top level testbench
 
 The top-level testbench is an object-oriented testbench that generates a 'test_input.txt' file, which contains randomly generated strings, with the degree of randomization and repetition of alphabets being decided by a randcase statement.  The driver module takes this txt file and drives 16-bytes at a time(i.e. at posedge of clock) into the DUT. After the DUT is reset and initialized, we drive these 16-byte chunks, and ideally, we should see the output stream of bytes to match the input string. SystemVerilog concepts such as interfaces, polymorphism, constrained randomization with weighted distributions, string operations and general Object Oriented Programming were learnt and deployed in this top-level testbench.
+
+## Progress
+
+### Compressor
+
+#### Validation
+
+The compressor has been successfully validated using its standalone testbench. The testbench consists of feeding in an input string and outputting compressed data. Many assertions are checked in the testbench and the number is printed out when the string has finished being compressed.
+
+#### Emulation
+The compressor has been successfully emulated on the Veloce platform using the TBX mode of emulation.
+
+### Decompressor
+
+#### Validation
+
+The decompressor has been successfully validated using manual test vectors that examine corner cases (including 256 repeating characters) as well as real text from websites and books. In addition, the testbench drives random generated strings into the decompressor and checks it against the original data. Errors are recorded and reported. A python3 program is included that can generate new random testvectors as well as manual testvectors given in test_vectors/manual_tvs.txt and line delimited.
+
+#### Emulation
+
+The basic framework has been laid down for decompressor to run in tbx mode and the decompressor modules were synthesized, but no attempt was made to run the testbench in this mode due to time constraints. 
+
+### Top testbench
+
+A testbench has been created that instantiates both the compressor and decompressor. This testbench successfully generates random values and drives them into the compressor, and then the top-level dut drives values into the decompressor. The decompressed characters are then collected by the testbench and compared to the original stimulus, and the testbench indicates whether they match.
 
 ## Running the design
 
