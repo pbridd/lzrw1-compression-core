@@ -62,7 +62,7 @@ module combined_top(
 	always_comb begin
 		comb_state_next = comb_state;
 		internal_controlPtr_next = internal_controlPtr;
-		//internal_dataPtr = internal_dataPtr_next;
+		internal_dataPtr_next = internal_dataPtr;
 		d_data_in = '0;
 		d_control_word_in = '0;
 		d_data_in_valid = 1'b0;
@@ -80,17 +80,18 @@ module combined_top(
 			COMPRESS:
 				begin
 				/* MK-> internal_controlPtr was not incrementing in  the compArray */
-				internal_controlPtr_next = internal_controlPtr + 1;
+				//internal_controlPtr_next = internal_controlPtr + 1;
 				if(valid == 1'b0 && c_Done)
 					comb_state_next = DECOMPRESS;
 				end
 			DECOMPRESS: begin
-				d_data_in_valid = 1'b1;
 				d_control_word_in = c_controlWord[internal_controlPtr];
 				if(!decompressor_busy) begin
+					d_data_in_valid = 1'b1;
 					internal_controlPtr_next = internal_controlPtr + 1;
 					//figure out whether to pull one or two bytes from the table
-					if(compArray[internal_controlPtr] == 1'b0) begin
+					//if(compArray[internal_controlPtr] == 1'b0) begin
+					if(c_controlWord[internal_controlPtr] == 1'b0) begin
 						d_data_in = {8'b00000000, compArray[internal_dataPtr]};
 						internal_dataPtr_next = internal_dataPtr + 1;
 					end
@@ -126,6 +127,7 @@ module combined_top(
 			.compArray(compArray),
 			.controlWord(c_controlWord),
 			.Done(c_Done),	// MK-> Avoiding multiply driven signals
+			//.uniqnums(),
 			.controlPtr(c_controlPtr)
 		);
 	decompressor_top #( 
