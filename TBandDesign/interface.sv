@@ -1,7 +1,7 @@
 interface input_interface(input bit clock);
 	logic reset;
 	logic valid;
-	logic [7:0] CurByte;
+	logic [15:0] [7:0] CurByte;
 	//logic done;
 	
 clocking cb@(posedge clock);
