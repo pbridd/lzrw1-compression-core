@@ -34,7 +34,7 @@ The decompressor has been successfully validated using manual test vectors that 
 
 #### Emulation
 
-At this time, the framework has been laid down for decompressor emulation in tbx mode but emulation has not yet been attempted.
+The basic framework has been laid down for decompressor to run in tbx mode and the decompressor modules were synthesized, but no attempt was made to run the testbench in this mode due to time constraints. 
 
 ### Top testbench
 
