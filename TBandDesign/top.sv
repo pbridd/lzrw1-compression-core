@@ -2,6 +2,7 @@
 `include "fileReader.sv"
 `include "string_writer.sv"
 `include "driver.sv"
+`include "checker.sv"
 `include "env.sv"
 `include "testcase.sv"
 `include "interface.sv"

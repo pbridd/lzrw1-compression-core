@@ -1,7 +1,7 @@
 TESTVECTORSFLAGS =  --num_chars 256 --num_vectors 100 --manual_tv manual_tvs.txt --io_path test_vectors/
 
 run_top_testbench: compile_testbench_sv
-	vsim top
+	vsim -c top
 
 run_decompressor_testbench: compile_decompressor_sv 
 	# put info here

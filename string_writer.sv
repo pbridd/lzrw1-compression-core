@@ -146,7 +146,7 @@ string blank_str = " ";
 string str;
 int words_for_text[],j,k;	// Dynamic array to store a set of words that will be repeated
 int strings_for_text[][];
-/* Constraint number of characters to be between 500 and 4500 */ 
+/* Constraint number of characters to be between 50 and 450 */ 
 constraint no_of_char {no_of_characters>50;no_of_characters <450;}
 //no_of_characters = $random;
 /* Constraining every letter to be ASCII */
